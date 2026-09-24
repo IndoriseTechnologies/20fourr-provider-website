@@ -13,10 +13,9 @@ export default function ProviderCard({ provider, selectedCity }) {
 
   return (
     <Link className="pcard" href={`/security-providers/${provider.id}`}>
-      {provider.agency && <span className="pcard__tag">Agency &middot; identity shown after booking</span>}
-
       <h3>{displayName(provider, shown)}</h3>
       <div className="pcard__sub">{meta}</div>
+      {provider.agency && <span className="pcard__tag">Agency &middot; identity shown after booking</span>}
 
       {/* An agency's roster covers everything, so listing categories on the card
           would say nothing — the categories are on the profile instead. */}

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Crumbs from '@/components/Crumbs';
 import JsonLd from '@/components/JsonLd';
 import Reveal from '@/components/Reveal';
 import JumpNav from './JumpNav';
@@ -70,7 +71,7 @@ export default function FaqsPage() {
         <div className="hero__glow" />
         <div className="wrap">
           <Reveal className="stack g-20">
-            <p className="eyebrow">Help centre</p>
+            <Crumbs trail={[{ label: 'Help centre' }]} />
             <h1>
               Questions, <em>answered</em> before you book.
             </h1>
@@ -114,8 +115,9 @@ export default function FaqsPage() {
       {/* ---------- cta ---------- */}
       <section className="band">
         <div className="wrap">
-          <Reveal className="stack g-20 cta-city">
-            <p className="eyebrow">Still unanswered</p>
+<div className="closer closer--solo">
+            <div className="closer__glow" aria-hidden="true" />
+            <div className="closer__copy">
             <h2>
               Ask it against a <em>booking</em>.
             </h2>
@@ -132,7 +134,8 @@ export default function FaqsPage() {
                 List your agency
               </Link>
             </div>
-          </Reveal>
+            </div>
+          </div>
         </div>
       </section>
     </>

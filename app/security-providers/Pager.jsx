@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ArrowRight } from '@/components/Icons';
 
 /**
  * Renders real links rather than buttons, so pagination works without JavaScript
@@ -23,17 +24,17 @@ export default function Pager({ page, pages, params }) {
   return (
     <nav className="pager" aria-label="Pagination">
       {prev >= 1 ? (
-        <Link href={href(prev)}>&larr; Previous</Link>
+        <Link href={href(prev)}><ArrowRight className="pager__back" /> Previous</Link>
       ) : (
-        <span className="disabled">&larr; Previous</span>
+        <span className="disabled"><ArrowRight className="pager__back" /> Previous</span>
       )}
       <span className="pager__pos">
         Page {page} of {pages}
       </span>
       {next <= pages ? (
-        <Link href={href(next)}>Next &rarr;</Link>
+        <Link href={href(next)}>Next <ArrowRight className="pager__fwd" /></Link>
       ) : (
-        <span className="disabled">Next &rarr;</span>
+        <span className="disabled">Next <ArrowRight className="pager__fwd" /></span>
       )}
     </nav>
   );

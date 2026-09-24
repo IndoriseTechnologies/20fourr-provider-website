@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import Crumbs from '@/components/Crumbs';
 import { notFound } from 'next/navigation';
 import JsonLd from '@/components/JsonLd';
 import Reveal from '@/components/Reveal';
+import { ArrowRight } from '@/components/Icons';
 import { CLIENT_APP_URL } from '@/app/site';
 import { providerJsonLd } from '../schema';
 import {
@@ -101,11 +103,7 @@ export default async function ProviderPage({ params }) {
         <div className="hero__glow" />
         <div className="wrap">
           <Reveal className="stack g-20">
-            <p className="eyebrow">
-              <Link href="/security-providers" className="crumb">
-                Providers
-              </Link>
-            </p>
+            <Crumbs trail={[{ label: 'Providers', href: '/security-providers' }, { label: name }]} />
             <h1>{name}</h1>
             <p className="pdetail__meta num">
               {provider.city} &middot; {ratingLabel(provider.rating, provider.ratingCount)} &middot;{' '}
@@ -173,7 +171,7 @@ export default async function ProviderPage({ params }) {
 
           <Reveal className="stack g-28">
             <div className="stack g-16">
-              <h2 className="eyebrow">What we checked before listing them</h2>
+              <h2 className="checks__h">What we checked before listing them</h2>
               <div className="checks">
                 {CHECKS.map((c, i) => (
                   <div className="check" key={i}>
@@ -200,7 +198,7 @@ export default async function ProviderPage({ params }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Book this provider
+                Book this provider <ArrowRight />
               </a>
               <Link className="btn btn--ghost" href="/security-providers">
                 Back to all providers

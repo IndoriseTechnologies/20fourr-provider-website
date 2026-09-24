@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import Crumbs from '@/components/Crumbs';
 import { Suspense } from 'react';
 import JsonLd from '@/components/JsonLd';
 import Reveal from '@/components/Reveal';
+import { ArrowRight } from '@/components/Icons';
 import Filters from './Filters';
 import Pager from './Pager';
 import ProviderCard from './ProviderCard';
@@ -97,7 +99,7 @@ export default async function ProvidersPage({ searchParams }) {
         <div className="hero__glow" />
         <div className="wrap">
           <Reveal className="stack g-20">
-            <p className="eyebrow">Providers</p>
+            <Crumbs trail={[{ label: 'Providers' }]} />
             {/* The H1 tracks the filters for the same reason the <title> does: on
                 ?city=Dehradun the page really is about Dehradun, and a generic
                 "across India" heading contradicts both the title and the results.
@@ -158,7 +160,9 @@ export default async function ProvidersPage({ searchParams }) {
       {/* ---------- cta ---------- */}
       <section className="band">
         <div className="wrap">
-          <Reveal className="stack g-20 cta-city">
+<div className="closer closer--solo">
+            <div className="closer__glow" aria-hidden="true" />
+            <div className="closer__copy">
             <h2>
               Can&rsquo;t see your city <em>yet</em>?
             </h2>
@@ -168,10 +172,11 @@ export default async function ProvidersPage({ searchParams }) {
             </p>
             <div>
               <Link className="btn btn--primary" href="/#how">
-                See how it works
+                See how it works <ArrowRight />
               </Link>
             </div>
-          </Reveal>
+            </div>
+          </div>
         </div>
       </section>
     </>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Crumbs from '@/components/Crumbs';
 import JsonLd from '@/components/JsonLd';
 import JumpNav from './JumpNav';
 import { LEGAL_NAME, SITE_URL } from '../site';
@@ -74,7 +75,7 @@ export default function PrivacyPage() {
         <div className="hero__glow" />
         <div className="wrap">
           <div className="stack g-20">
-            <p className="eyebrow">Legal</p>
+            <Crumbs trail={[{ label: 'Legal' }]} />
             <h1>Privacy policy</h1>
             <p className="legal-meta">Effective date: 1 January 2025 &middot; Last updated: 1 July 2025</p>
           </div>
