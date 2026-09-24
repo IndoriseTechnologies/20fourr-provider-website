@@ -4,6 +4,7 @@ import {
   CATEGORY_LABEL,
   CATEGORY_SERVICE_PHRASE,
   displayName,
+  LISTINGS_ARE_SAMPLE,
   shownCityFor,
 } from './data';
 
@@ -17,10 +18,10 @@ import {
  * of thing that costs a domain its rich results across the board rather than
  * just on the offending page.
  *
- * Flip this to true once the directory is fed by the booking platform and each
+ * This follows LISTINGS_ARE_SAMPLE in data.js: it turns on once the directory is fed by the booking platform and each
  * rating traces to a paid, completed shift. Nothing else has to change.
  */
-const RATINGS_ARE_REAL = false;
+const RATINGS_ARE_REAL = !LISTINGS_ARE_SAMPLE;
 
 const CATEGORY_SERVICE_TYPE = {
   guard: 'Security guard service',

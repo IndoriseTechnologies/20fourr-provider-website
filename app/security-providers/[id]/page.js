@@ -3,6 +3,7 @@ import Crumbs from '@/components/Crumbs';
 import { notFound } from 'next/navigation';
 import JsonLd from '@/components/JsonLd';
 import Reveal from '@/components/Reveal';
+import SampleNotice from '@/components/SampleNotice';
 import { ArrowRight } from '@/components/Icons';
 import { CLIENT_APP_URL } from '@/app/site';
 import { providerJsonLd } from '../schema';
@@ -12,6 +13,7 @@ import {
   displayName,
   findProvider,
   inr,
+  LISTINGS_ARE_SAMPLE,
   PROVIDERS,
   ratingLabel,
 } from '../data';
@@ -109,6 +111,7 @@ export default async function ProviderPage({ params }) {
               {provider.city} &middot; {ratingLabel(provider.rating, provider.ratingCount)} &middot;{' '}
               {provider.experienceYears} years&rsquo; experience
             </p>
+            {LISTINGS_ARE_SAMPLE && <SampleNotice />}
             <div className="chips">
               {provider.badges.map((b) => (
                 <span className="chip" key={b}>

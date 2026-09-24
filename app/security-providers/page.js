@@ -3,6 +3,7 @@ import Crumbs from '@/components/Crumbs';
 import { Suspense } from 'react';
 import JsonLd from '@/components/JsonLd';
 import Reveal from '@/components/Reveal';
+import SampleNotice from '@/components/SampleNotice';
 import { ArrowRight } from '@/components/Icons';
 import Filters from './Filters';
 import Pager from './Pager';
@@ -12,6 +13,7 @@ import {
   CATEGORY_LABEL,
   CATEGORY_PLURAL,
   CATEGORY_SERVICE_PHRASE,
+  LISTINGS_ARE_SAMPLE,
   PAGE_SIZE,
   parseSearchParams,
   queryProviders,
@@ -127,6 +129,7 @@ export default async function ProvidersPage({ searchParams }) {
       {/* ---------- listing ---------- */}
       <section className="band band--ink-2" id="providers-list">
         <div className="wrap">
+          {LISTINGS_ARE_SAMPLE && <SampleNotice />}
           <p className="count">{countLine}</p>
 
           {providers.length === 0 ? (

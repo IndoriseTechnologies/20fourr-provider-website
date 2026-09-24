@@ -27,8 +27,8 @@ export default function Nav() {
     <nav className={open ? 'nav nav--open' : 'nav'}>
       <div className="wrap nav__in">
         <Link className="brand" href="/" onClick={close}>
-          <Image src="/logo-mark.svg" alt="20fourr logo" width={48} height={48} priority />
-          <span className="brand__name">20fourr</span>
+          <Image src="/logo-mark.svg" alt="20fourr" width={50} height={30} priority />
+          <span className="brand__name" aria-hidden="true">20fourr</span>
         </Link>
 
         <button

@@ -58,8 +58,8 @@ export default function Footer() {
         <div className="foot__cols">
           <div className="foot__brand">
             <Link className="brand" href="/">
-              <Image src="/logo-mark.svg" alt="20fourr logo" width={48} height={48} priority />
-              <span className="brand__name" style={{ color: 'var(--paper)' }}>
+              <Image src="/logo-mark.svg" alt="20fourr" width={50} height={30} priority />
+              <span className="brand__name" aria-hidden="true" style={{ color: 'var(--paper)' }}>
                 20fourr
               </span>
             </Link>

@@ -563,8 +563,8 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 }
 .nav__in { display: flex; align-items: center; gap: var(--s-6); height: var(--nav-h); }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); flex-shrink: 0; }
-/* logo-mark.svg wraps a 78×52 bitmap: 26px tall is its native 2× size. */
-.brand img { height: 26px; width: auto; }
+/* logo-mark.svg is vector; 30px keeps the rotated FOURR legible. */
+.brand img { height: 30px; width: auto; }
 .brand__mark { width: 22px; height: 26px; flex-shrink: 0; }
 .brand__name {
   font-family: var(--display); font-size: 1.3rem; font-weight: 500;
@@ -1626,4 +1626,31 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 @media (max-width: 480px) {
   .row { flex-wrap: wrap; }
   .row__v { white-space: normal; }
+}
+
+/* Sample-data notice on the directory and profiles. */
+.sample-note {
+  display: flex; gap: 10px; align-items: flex-start;
+  margin: 0 0 var(--s-5); padding: 12px 16px; max-width: 78ch;
+  border-radius: var(--r-md);
+  border: 1px solid color-mix(in srgb, var(--amber) 35%, transparent);
+  background: rgba(232, 163, 61, .06);
+  font-size: var(--fs-sm); color: var(--text-2); line-height: 1.6;
+}
+.sample-note svg { color: var(--amber); margin-top: 3px; flex-shrink: 0; }
+.sample-note b { color: var(--text); }
+.hero--list .sample-note { margin: 0; }
+
+/* A role frame with no photo: the credential it clears, drawn large. */
+.role__mark {
+  position: absolute; inset: 0 0 38% 0; display: grid; place-items: center;
+  color: color-mix(in srgb, var(--amber) 70%, transparent);
+}
+.role__mark svg { width: 38%; height: auto; }
+.role:not(.role--photo) {
+  background:
+    radial-gradient(80% 60% at 50% 30%, rgba(232, 163, 61, .10), transparent 70%),
+    radial-gradient(rgba(146, 160, 166, .12) 1px, transparent 1px),
+    var(--ink-2);
+  background-size: 100% 100%, 14px 14px, auto;
 }

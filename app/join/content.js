@@ -8,7 +8,7 @@
  */
 
 export const WHATSAPP_URL =
-  'https://wa.me/910000000000?text=' + encodeURIComponent('I want to join 20fourr as a provider');
+  'https://wa.me/919259577593?text=' + encodeURIComponent('I want to join 20fourr as a provider');
 
 /**
  * The roles shown in the hero.
@@ -39,8 +39,11 @@ const roles = {
       code: 'GUN',
       name: 'Armed gunman',
       req: 'Firearm licence, per booking',
-      src: '/roles/gunman.jpg',
-      alt: 'An officer in tactical body armour and helmet holding a rifle outside a commercial building.',
+      // The previous photo showed a police officer (the vest read POLICE) outside
+      // India. Private security is legally distinct from police, so the frame
+      // renders as a plate until a photo of a licensed private armed guard exists.
+      src: null,
+      alt: '',
     },
   ],
   hi: [
@@ -56,8 +59,8 @@ const roles = {
       code: 'GUN',
       name: 'गनमैन',
       req: 'हर बुकिंग पर हथियार लाइसेंस',
-      src: '/roles/gunman.jpg',
-      alt: 'बुलेटप्रूफ जैकेट और हेलमेट पहने, राइफल लिए एक अधिकारी किसी इमारत के बाहर।',
+      src: null,
+      alt: '',
     },
   ],
 };

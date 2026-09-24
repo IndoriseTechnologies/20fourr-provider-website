@@ -77,9 +77,13 @@ marketing copy.
 - Native iOS/Android apps are in store review; the web apps are the only "get the app"
   destination right now. This is a temporary constraint, not a permanent architecture
   decision — copy and CTAs should stay easy to update when native apps ship.
-- Undecided/not yet supplied: a real WhatsApp support number for `/join` (currently a
-  placeholder, `910000000000`, in `app/join/content.js` — do not treat as real or ship
-  further UI implying it works until the client supplies a real one).
+- WhatsApp support number for `/join`: +91 92595 77593 (`WHATSAPP_URL` in
+  `app/join/content.js`).
+- The provider directory (`app/security-providers/data.js`) is sample data until the
+  booking platform feeds it. `LISTINGS_ARE_SAMPLE` labels it on the page and keeps its
+  ratings out of structured data; flip it when real listings arrive.
+- Platform commission is 15% (plus GST on the commission), stated on `/join`, `/terms` and
+  `/faqs`.
 
 ## Brand Commitments
 
