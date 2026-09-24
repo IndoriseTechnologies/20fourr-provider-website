@@ -1,164 +1,203 @@
 /* ============================================================
    20fourr — design system
-   Palette : ink (ground) + paper (document bands) + amber (the one accent)
-   Type    : Big Shoulders display · IBM Plex Sans body · IBM Plex Mono data
+   Tokens, base elements and shared controls. DESIGN.md is the
+   written contract for everything declared here; change both together.
+
+   Palette : ink (ground, three depths) + paper (one document band) +
+             amber (the one accent) + green (verified states only)
+   Type    : Big Shoulders display · IBM Plex Sans text · IBM Plex Mono data
    ------------------------------------------------------------
    One fixed scheme, not a light/dark pair. The page ground is ink
-   everywhere; rhythm comes from paper bands cut into it, so there is
-   nothing to flip and no prefers-color-scheme branch.
-
-   Two layers:
-     1. the palette below — raw values, the source of truth
-     2. a semantic layer (--bg / --text / --line / --accent …) that is
-        redeclared inside .band--paper. Components read the semantic
-        layer only, so the same card CSS works on either ground.
+   everywhere; the paper context re-resolves the semantic layer, so
+   components read --bg / --text / --line … and never a raw value.
    ============================================================ */
 
 :root {
-  /* ---------- palette ---------- */
-  --ink:          #12181B;  /* body, hero, nav, footer */
-  --ink-2:        #1B2429;  /* cards on dark — duty ticket, ledger, invoice */
-  --ink-3:        #232F35;  /* third dark tone, depth and hover states */
+  /* ---------- palette · raw values ---------- */
+  --ink-0:        #0E1316;  /* deepest — inset stages, footer */
+  --ink:          #12181B;  /* page ground */
+  --ink-2:        #1B2429;  /* raised surface — panels, cards */
+  --ink-3:        #232F35;  /* hover and pressed surfaces */
 
-  --paper:        #EDEFE7;  /* light band ground — cool sage-grey, not cream */
-  --paper-2:      #E3E6DB;  /* secondary paper tone */
+  --paper:        #EDEFE7;  /* document band ground, and text on ink */
+  --paper-2:      #E3E6DB;
 
   --amber:        #E8A33D;  /* the only saturated colour, rationed */
-  --amber-dim:    #B87F2A;  /* amber as text on paper, contrast-safe */
+  --amber-hi:     #F2B457;  /* primary hover */
+  --amber-dim:    #8A5A12;  /* amber as text on paper — 5.1:1 (was #B87F2A, 2.96:1) */
 
-  --verified:     #3FA66B;  /* verified states only — ticket dots, the stamp */
+  --verified:     #3FA66B;  /* verified states only */
   --verified-dim: #2C7A4B;  /* the same, legible on paper */
 
-  --charcoal:     #1B2226;  /* body text on paper */
-  --steel:        #92A0A6;  /* muted secondary text on ink */
-  --steel-dim:    #5C6A70;  /* muted secondary text on paper */
+  --charcoal:     #1B2226;  /* text on paper */
+  --steel:        #92A0A6;  /* secondary text on ink — 6.7:1 */
+  --steel-3:      #84919A;  /* tertiary text on ink — ≥4.9:1 on ink-2 */
+  --steel-dim:    #5C6A70;  /* secondary text on paper — 4.8:1 */
 
-  --hair:         rgba(146, 160, 166, .18);  /* hairline on ink */
-  --hair-paper:   rgba(27, 34, 38, .12);     /* hairline on paper */
+  --hair:         rgba(146, 160, 166, .16);
+  --hair-strong:  rgba(146, 160, 166, .30);
+  --hair-paper:   rgba(27, 34, 38, .12);
 
-  /* ---------- semantic layer · ink context (the page default) ---------- */
-  --bg:        var(--ink);
-  --bg-2:      var(--ink-2);
-  --bg-3:      var(--ink-3);
-  --text:      var(--paper);
-  --text-2:    var(--steel);
-  --text-3:    color-mix(in srgb, var(--steel) 74%, var(--ink));
-  --line:      var(--hair);
-  --line-soft: rgba(146, 160, 166, .10);
-  --accent:    var(--amber);
-  --ok:        var(--verified);
-
-  --shadow:      0 1px 2px rgba(0, 0, 0, .34), 0 18px 40px -18px rgba(0, 0, 0, .62);
-  --shadow-lift: 0 2px 6px rgba(0, 0, 0, .4), 0 34px 64px -22px rgba(0, 0, 0, .78);
+  /* ---------- semantic layer · ink context ---------- */
+  --bg:          var(--ink);
+  --bg-2:        var(--ink-2);
+  --bg-3:        var(--ink-3);
+  --text:        var(--paper);
+  --text-2:      var(--steel);
+  --text-3:      var(--steel-3);
+  --line:        var(--hair);
+  --line-strong: var(--hair-strong);
+  --line-soft:   rgba(146, 160, 166, .09);
+  --edge:        rgba(237, 239, 231, .055); /* top-edge highlight on raised surfaces */
+  --accent:      var(--amber);
+  --ok:          var(--verified);
 
   /* ---------- type ---------- */
   --display: var(--font-display), "Arial Narrow", "Helvetica Neue", sans-serif;
-  --body: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --mono: var(--font-mono), ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
-  /* The display face has no Devanagari — Hindi runs in Plex Devanagari so a
-     headline never silently falls back to a broken face. --font-deva is only
-     ever set inside app/join/hi/layout.js's subtree (scoped there so other
-     routes don't preload it); the inline fallback here is belt-and-suspenders
-     so [lang="hi"] styling never becomes invalid if that ever changes. */
-  --deva: var(--font-deva, "Noto Sans Devanagari"), "Nirmala UI", var(--body);
+  --body:    var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono:    var(--font-mono), ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace;
+  /* --font-deva is only set inside app/join/hi/layout.js's subtree. */
+  --deva:    var(--font-deva, "Noto Sans Devanagari"), "Nirmala UI", var(--body);
 
-  --measure: 1180px;
-  --gut: clamp(20px, 5vw, 48px);
-  /* Light capitals need air around them or they read as cramped rather than
-     composed — the whole scale sits smaller, so the space has to grow. */
-  --band-y: clamp(80px, 11vw, 160px);
+  /* Scale. Text steps are fixed; display steps are fluid and jump steeply,
+     because light condensed capitals need size, not weight, to lead. */
+  --fs-2xs: .6875rem;  /* 11 — mono micro labels */
+  --fs-xs:  .75rem;    /* 12 — captions, fine print */
+  --fs-sm:  .875rem;   /* 14 — secondary text, buttons */
+  --fs-md:  1rem;      /* 16 — body */
+  --fs-lg:  1.125rem;  /* 18 — lede */
+  --fs-xl:  1.25rem;   /* 20 — card titles */
+  --fs-d3:  clamp(1.5rem, 1.1rem + 1.3vw, 2rem);        /* sub-section heads */
+  --fs-d2:  clamp(2.1rem, 1.35rem + 2.6vw, 3.25rem);    /* section heads */
+  --fs-d1:  clamp(2.7rem, 1.5rem + 4.3vw, 4.75rem);     /* the one h1 */
+
+  --lh-display: 1;
+  --lh-snug:    1.3;
+  --lh-body:    1.6;
+
+  /* ---------- space · 4px grid ---------- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;  --s-5: 24px;
+  --s-6: 32px; --s-7: 48px; --s-8: 64px; --s-9: 96px;  --s-10: 128px;
+
+  --measure: 1200px;
+  --prose:   64ch;
+  --gut:     clamp(20px, 5vw, 40px);
+  --band-y:  clamp(88px, 10vw, 144px);   /* section padding */
+  --head-y:  clamp(40px, 5vw, 64px);     /* section head → content */
+
+  /* ---------- shape ---------- */
+  --r-sm: 6px;    /* buttons, inputs, chips */
+  --r-md: 10px;   /* cards */
+  --r-lg: 16px;   /* panels, stages */
+
+  /* ---------- depth ---------- */
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px -12px rgba(0, 0, 0, .5);
+  --shadow-2: 0 2px 4px rgba(0, 0, 0, .3), 0 32px 64px -28px rgba(0, 0, 0, .85);
+  --shadow:      var(--shadow-1);   /* legacy aliases */
+  --shadow-lift: var(--shadow-2);
+
+  /* ---------- motion ---------- */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);   /* exponential out */
+  --ease-io:  cubic-bezier(.65, 0, .35, 1);
+  --dur-1: 140ms;   /* hover, press */
+  --dur-2: 240ms;   /* state change */
+  --dur-3: 520ms;   /* crossfade, entrance */
+
+  --nav-h: 64px;
 }
 
-/* ---------- semantic layer · paper context ----------
-   Everything inside a paper band re-resolves: text darkens, hairlines
-   flip polarity, and the accent steps down to the contrast-safe amber. */
+/* ---------- semantic layer · paper context ---------- */
 .band--paper,
 .on-paper {
-  /* cards sit on the same paper as the band and are cut out by a hairline,
-     not by a fill — --bg-2 only steps in for footers and hover */
-  --bg:        var(--paper);
-  --bg-2:      var(--paper);
-  --bg-3:      var(--paper-2);
-  --text:      var(--charcoal);
-  --text-2:    var(--steel-dim);
-  --text-3:    var(--steel-dim);
-  --line:      var(--hair-paper);
-  --line-soft: rgba(27, 34, 38, .07);
-  --accent:    var(--amber-dim);
-  --ok:        var(--verified-dim);
-
-  --shadow:      0 1px 2px rgba(27, 34, 38, .05), 0 14px 32px -14px rgba(27, 34, 38, .16);
-  --shadow-lift: 0 2px 4px rgba(27, 34, 38, .06), 0 26px 52px -18px rgba(27, 34, 38, .24);
+  --bg:          var(--paper);
+  --bg-2:        #F4F5EF;
+  --bg-3:        var(--paper-2);
+  --text:        var(--charcoal);
+  --text-2:      var(--steel-dim);
+  --text-3:      var(--steel-dim);
+  --line:        var(--hair-paper);
+  --line-strong: rgba(27, 34, 38, .22);
+  --line-soft:   rgba(27, 34, 38, .07);
+  --edge:        rgba(255, 255, 255, .7);
+  --accent:      var(--amber-dim);
+  --ok:          var(--verified-dim);
+  --shadow-1: 0 1px 2px rgba(27, 34, 38, .05), 0 10px 28px -14px rgba(27, 34, 38, .18);
+  --shadow-2: 0 2px 4px rgba(27, 34, 38, .06), 0 26px 52px -22px rgba(27, 34, 38, .26);
 
   background: var(--bg);
   color: var(--text);
 }
 
+/* ---------- base ---------- */
 * { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; color-scheme: dark; }
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  scrollbar-color: #2B373D var(--ink);
+  -webkit-text-size-adjust: 100%;
+}
 
 body {
   margin: 0;
   background: var(--ink);
   color: var(--text);
   font-family: var(--body);
-  font-size: 17px;
-  line-height: 1.6;
+  font-size: var(--fs-md);
+  line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  caret-color: var(--amber);
 }
 
-/* ---------- headings ----------
-   The display face is set LIGHT and UPPERCASE, at a restrained size. That
-   combination is the whole character: light condensed capitals read as
-   engraved — a stamped plate, a licence, a document header. Set the same
-   face heavy and it turns into a poster, which is the opposite claim.
+::selection { background: rgba(232, 163, 61, .3); color: var(--paper); }
+.band--paper ::selection { background: rgba(138, 90, 18, .2); color: var(--charcoal); }
 
-   Uppercase is for h1 and h2 only. Card titles (h3) stay sentence case at a
-   normal weight, because a paragraph-length title in light capitals stops
-   being readable. `opsz` is set per level so the small sizes don't render
-   as shrunken billboards. */
+img, svg, video { max-width: 100%; }
+
+/* ---------- headings ----------
+   h1/h2: Big Shoulders, light (300) and uppercase — the engraved-plate
+   character the brand is built on. h3 and below are *read*, not scanned,
+   so they move to Plex Sans at 600: a paragraph-length title in condensed
+   capitals stops being legible. */
 h1, h2 {
   font-family: var(--display);
   font-weight: 300;
   text-transform: uppercase;
-  line-height: 1.04;
+  line-height: var(--lh-display);
   text-wrap: balance;
   margin: 0;
 }
 h1 {
-  font-size: clamp(2.15rem, 4.3vw, 3.6rem);
-  letter-spacing: .012em;
-  font-variation-settings: "opsz" 60;
+  font-size: var(--fs-d1);
+  letter-spacing: .005em;
+  font-variation-settings: "opsz" 72;
 }
 h2 {
-  font-size: clamp(1.6rem, 2.7vw, 2.3rem);
-  letter-spacing: .022em;
-  font-variation-settings: "opsz" 40;
+  font-size: var(--fs-d2);
+  letter-spacing: .012em;
+  font-variation-settings: "opsz" 48;
 }
-h3 {
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: clamp(1.2rem, 1.8vw, 1.4rem);
-  line-height: 1.16;
-  letter-spacing: .008em;
-  font-variation-settings: "opsz" 22;
+h1 em, h2 em { font-style: normal; color: var(--accent); }
+h3, h4 {
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: var(--fs-xl);
+  line-height: var(--lh-snug);
+  letter-spacing: -.012em;
   text-wrap: balance;
   margin: 0;
 }
-p  { margin: 0; }
-a  { color: inherit; }
-b, strong { font-weight: 500; }
-/* Themed rather than left at the browser default black dotted rule — the
-   hover/long-press hint for a first-timer who doesn't yet know an acronym
-   (PSARA, currently the only one used inline in running copy). */
-abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--text-3); cursor: help; }
+h4 { font-size: var(--fs-md); }
+p  { margin: 0; text-wrap: pretty; }
+a  { color: inherit; text-underline-offset: .22em; text-decoration-thickness: 1px; }
+b, strong { font-weight: 600; color: var(--text); }
+code { font-family: var(--mono); font-size: .92em; }
+abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--text-3); text-underline-offset: .2em; cursor: help; }
 
-/* Hindi: swap the face and relax the leading Devanagari needs. Devanagari
-   has no case, so `text-transform` is dropped rather than left to no-op —
-   and weight 300 is far too fragile in this script, so it steps back up. */
+/* Hindi: Devanagari has no case, and 300 is too fragile in this script. */
 [lang="hi"] h1, [lang="hi"] h2, [lang="hi"] h3 {
   font-family: var(--deva);
   font-weight: 500;
@@ -173,11 +212,30 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 [lang="hi"] h3 { font-size: clamp(1.05rem, 1.6vw, 1.2rem); }
 
 /* ---------- utility type ---------- */
+.lede {
+  font-size: var(--fs-lg);
+  color: var(--text-2);
+  max-width: 58ch;
+  line-height: 1.6;
+}
+.lede b { color: var(--text); font-weight: 500; }
+/* Mono micro label — for data and states (a status, a code, a column
+   name), never as a kicker above a heading. */
+.label {
+  font-family: var(--mono);
+  font-size: var(--fs-2xs);
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+[lang="hi"] .label { font-family: var(--deva); letter-spacing: .02em; text-transform: none; font-size: .8rem; }
+/* Legacy kicker, still used by pages not yet migrated. */
 .eyebrow {
   font-family: var(--mono);
-  font-size: .69rem;
+  font-size: var(--fs-2xs);
   font-weight: 500;
-  letter-spacing: .17em;
+  letter-spacing: .12em;
   text-transform: uppercase;
   color: var(--accent);
   margin: 0;
@@ -185,8 +243,6 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
   align-items: flex-start;
   gap: 9px;
 }
-/* the rationed amber dot — the smallest place the accent is allowed.
-   Pinned to the first line so a wrapping eyebrow doesn't float it mid-block. */
 .eyebrow::before {
   content: "";
   width: 5px; height: 5px;
@@ -196,12 +252,6 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
   flex-shrink: 0;
 }
 [lang="hi"] .eyebrow { font-family: var(--deva); letter-spacing: .06em; text-transform: none; font-size: .84rem; }
-.lede {
-  font-size: clamp(1.06rem, 1.45vw, 1.2rem);
-  color: var(--text-2);
-  max-width: 60ch;
-  line-height: 1.62;
-}
 .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -211,50 +261,79 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 /* ---------- layout primitives ---------- */
 .wrap { width: 100%; max-width: var(--measure); margin-inline: auto; padding-inline: var(--gut); }
 .band { padding-block: var(--band-y); background: var(--bg); color: var(--text); }
-/* the nav is sticky and 66px tall — anchor targets have to clear it */
-.band[id], [id].hero { scroll-margin-top: 78px; }
-/* .anchor: a mid-band scroll target that isn't a whole .band's own id — e.g.
-   #trust now lands inside the "how" band, on the badges intro specifically,
-   rather than owning a full section of its own. */
-.anchor { scroll-margin-top: 78px; }
+.band[id], [id].hero, .anchor { scroll-margin-top: calc(var(--nav-h) + 16px); }
 .band--ink-2 { --bg: var(--ink-2); }
-/* A subordinate aside, not a peer section — half the usual band rhythm, for
-   content that should read as a brief mention rather than its own topic. */
-.band--aside { padding-block: clamp(48px, 6vw, 84px); }
+.band--deep  { --bg: var(--ink-0); }
+.band--aside { padding-block: clamp(56px, 7vw, 96px); }
+/* A hairline between two adjacent bands of the same ground. */
+.band--rule { border-top: 1px solid var(--hair); }
 .stack { display: flex; flex-direction: column; }
 .g-12 { gap: 12px; } .g-16 { gap: 16px; } .g-20 { gap: 20px; }
 .g-28 { gap: 28px; } .g-40 { gap: 40px; }
 
+/* ---------- focus ---------- */
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 2px; }
+
 /* ---------- buttons ----------
-   Amber CTAs keep full strength on both grounds — --amber-dim is for text,
-   never for a fill, or the primary action goes muddy on paper. */
-/* Mono, square, generously padded. A monospaced label reads as a *command*
-   rather than a marketing word, which is the same argument the OTP codes and
-   ledger rows make. Square corners because nothing else here is rounded. */
+   Labels are mono (brand commitment): a monospaced CTA reads as a command.
+   Primary amber keeps full strength on both grounds — --amber-dim is for
+   text, never for a fill. One primary per viewport. */
 .btn {
+  --btn-h: 48px;
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  font-family: var(--mono); font-size: .875rem; font-weight: 400; line-height: 1;
-  letter-spacing: .015em;
-  padding: 18px 26px; border-radius: 0; border: 1px solid transparent;
+  min-height: var(--btn-h);
+  padding: 0 22px;
+  font-family: var(--mono); font-size: var(--fs-sm); font-weight: 500; line-height: 1;
+  letter-spacing: 0;
+  border-radius: var(--r-sm);
+  border: 1px solid transparent;
   text-decoration: none; cursor: pointer; white-space: nowrap;
-  transition: background-color .16s ease, border-color .16s ease, color .16s ease, transform .16s ease;
+  transition:
+    background-color var(--dur-1) ease,
+    border-color var(--dur-1) ease,
+    color var(--dur-1) ease,
+    box-shadow var(--dur-2) ease,
+    transform var(--dur-1) ease;
 }
-[lang="hi"] .btn { font-family: var(--deva); font-weight: 500; letter-spacing: 0; }
+[lang="hi"] .btn { font-family: var(--deva); font-weight: 500; }
 .btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
 .btn:active { transform: translateY(1px); }
-.btn--primary { background: var(--amber); color: var(--ink); }
-.btn--primary:hover { background: #F2B457; }
-.btn--ghost { border-color: var(--line); color: var(--text); }
-.btn--ghost:hover { border-color: var(--text-2); background: color-mix(in srgb, var(--text) 6%, transparent); }
-.btn--outline { border-color: var(--line); color: var(--text); }
-.btn--outline:hover { border-color: var(--text-2); }
-/* WhatsApp keeps its glyph but not its green: brand green would break the
-   one-accent rule and collide with the reserved verified green. */
+.btn--primary {
+  background: var(--amber); color: var(--ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px -10px rgba(232, 163, 61, .45);
+}
+.btn--primary:hover {
+  background: var(--amber-hi);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .34), 0 1px 2px rgba(0, 0, 0, .3), 0 12px 32px -10px rgba(232, 163, 61, .6);
+}
+.btn--ghost,
+.btn--outline {
+  background: color-mix(in srgb, var(--text) 4%, transparent);
+  border-color: var(--line-strong);
+  color: var(--text);
+  box-shadow: inset 0 1px 0 var(--edge);
+}
+.btn--ghost:hover,
+.btn--outline:hover {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+  border-color: color-mix(in srgb, var(--text) 34%, transparent);
+}
 .btn--whatsapp { background: var(--amber); color: var(--ink); }
-.btn--whatsapp:hover { background: #F2B457; }
-.btn--sm { padding: 12px 18px; font-size: .8rem; }
-.btn--lg { padding: 20px 32px; font-size: .95rem; }
-.btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+.btn--whatsapp:hover { background: var(--amber-hi); }
+.btn--sm { --btn-h: 36px; padding: 0 14px; font-size: .8125rem; }
+.btn--lg { --btn-h: 56px; padding: 0 28px; font-size: .9375rem; }
+.btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+/* The trailing arrow nudges on hover — the one motion a button owns. */
+.btn__arw { display: inline-block; transition: transform var(--dur-2) var(--ease-out); }
+.btn:hover .btn__arw, .text-link:hover .btn__arw { transform: translateX(3px); }
+
+/* Inline action link — mono, accent, underline on hover. */
+.text-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  color: var(--accent); font-family: var(--mono); font-size: .8125rem; font-weight: 500;
+  text-decoration: none;
+}
+.text-link:hover { text-decoration: underline; text-underline-offset: .3em; }
 
 /* ---------- nav ---------- */
 .nav {
@@ -512,8 +591,6 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 .svc--l3 h3 { font-weight: 600; }
 .svc--l4 { border-top: 3px solid var(--charcoal); }
 .svc--l4 h3 { font-weight: 700; }
-.text-link { color: var(--accent); font-family: var(--mono); font-size: .76rem; text-decoration: none; }
-.text-link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .city-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
 .city-link { background: var(--bg); padding: 18px 20px; color: var(--text); text-decoration: none; font-size: .92rem; display: flex; justify-content: space-between; gap: 14px; }
 .city-link:hover { background: var(--bg-3); color: var(--accent); }
@@ -1408,8 +1485,10 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 }
 
 /* ---------- scroll reveal ---------- */
-.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.3,1); }
-.reveal.in { opacity: 1; transform: none; }
+/* Content is visible by default; the rise is transform-only, so a slow
+   script or a missed observer never leaves anything unreadable. */
+.reveal { transform: translateY(16px); transition: transform .8s var(--ease-out); }
+.reveal.in { transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
