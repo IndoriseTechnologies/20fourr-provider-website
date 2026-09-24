@@ -1334,13 +1334,15 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
    ============================================================ */
 .filters {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3);
-  margin-top: clamp(28px, 4vw, 44px); min-height: 78px;
+  /* the Suspense fallback is an empty .filters: reserve the real panel's
+     height (one row / three stacked) so the list never jumps when it fills */
+  margin-top: clamp(28px, 4vw, 44px); min-height: 98px;
   padding: var(--s-3); border-radius: var(--r-lg);
   border: 1px solid var(--line); background: var(--ink-2);
   box-shadow: inset 0 1px 0 var(--edge);
   transition: opacity var(--dur-2) ease;
 }
-@media (max-width: 720px) { .filters { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .filters { grid-template-columns: 1fr; min-height: 265px; } }
 .filters__f { display: flex; flex-direction: column; gap: 6px; }
 .filters label {
   font-family: var(--mono); font-size: var(--fs-2xs); font-weight: 500; letter-spacing: .08em;
@@ -1591,3 +1593,37 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 @media (max-width: 760px) { .jbar { display: flex; } .jbar-spacer { display: block; } }
 
 .notfound { min-height: 60vh; display: flex; align-items: center; }
+
+/* ============================================================
+   Touch targets and narrow screens (QA pass)
+   Every tappable thing reaches 40px on touch screens; inline
+   links grow their hit area with padding rather than their box.
+   ============================================================ */
+.text-link, .hero__verify { padding-block: 10px; margin-block: -10px; }
+.brand { min-height: 40px; }
+.crumbs a { display: inline-block; padding-block: 9px; }
+.foot ul { gap: 2px; }
+.foot li a { display: inline-block; padding-block: 9px; }
+.foot__brand a[aria-label] { display: inline-grid; place-items: center; min-width: 40px; min-height: 40px; margin: -7px; }
+.jump__i { min-height: 40px; display: flex; align-items: center; }
+.langtoggle a { min-height: 36px; display: inline-flex; align-items: center; padding-block: 9px; }
+.langbar__note { display: inline-block; padding-block: 9px; }
+/* carousel dots: a 24px hit area around a 6px dot */
+.carousel__dots { gap: 4px; }
+.carousel__dot { width: 24px; height: 24px; background: transparent; display: grid; place-items: center; transform: none !important; }
+.carousel__dot::before {
+  content: ""; width: 6px; height: 6px; border-radius: 6px; background: var(--line-strong);
+  transition: transform var(--dur-2) var(--ease-out), background-color var(--dur-2) ease;
+}
+.carousel__dot.is-on { background: transparent; }
+.carousel__dot.is-on::before { transform: scaleX(3); background: var(--accent); }
+@media (max-width: 560px) {
+  .nav__cta .btn--sm { --btn-h: 40px; }
+}
+@media (max-width: 1000px) {
+  .jump__i { white-space: normal; }
+}
+@media (max-width: 480px) {
+  .row { flex-wrap: wrap; }
+  .row__v { white-space: normal; }
+}

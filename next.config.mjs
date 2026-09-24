@@ -28,6 +28,9 @@ const nextConfig = {
   // Marketing pages are fully static — city and service pages added later
   // will be generated at build time by generateStaticParams().
   poweredByHeader: false,
+  // Screenshots and role photos are served through next/image: resized to
+  // the rendered width and re-encoded, AVIF first, instead of full-size PNGs.
+  images: { formats: ['image/avif', 'image/webp'] },
   async headers() {
     return [
       {

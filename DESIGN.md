@@ -168,6 +168,21 @@ Card anatomy is always: title → body → metadata. A label never precedes the 
 Themed, not left at defaults: text selection (amber at 30%), caret (amber), scrollbar (ink),
 focus ring (amber), underline offset (0.22em), tabular numerals in every figure.
 
+## Accessibility and performance floor
+
+Verified across every route at 320, 390, 768, 1024, 1280 and 1440px:
+
+- No horizontal scroll at any width.
+- Every text/ground pair ≥ 4.5:1 (≥ 3:1 for large display text).
+- Touch targets ≥ 40px on touch screens (carousel dots: 24px, the WCAG 2.2 minimum). Inline links
+  grow their hit area with padding, not their visual box.
+- Cumulative layout shift 0. Anything that renders late reserves its final size (see `.filters`).
+- App screenshots and role photos go through `next/image` (AVIF/WebP, sized to the rendered
+  width). Never ship a raw PNG into a page: the homepage's eleven screenshots dropped from about
+  2.4 MB to under 200 KB this way.
+- Every interactive element has a visible focus ring; the step picker is a keyboard tablist.
+- `prefers-reduced-motion` removes every movement and shows end states.
+
 ## Voice on the page
 
 Copy is the product's own and is not rewritten by design work. Legal, compliance and factual
