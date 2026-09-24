@@ -1654,3 +1654,18 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
     var(--ink-2);
   background-size: 100% 100%, 14px 14px, auto;
 }
+
+/* Step picker auto-play: a progress bar fills under the active step while
+   the flow plays by itself; it disappears once the visitor takes over. */
+.picker__tab { position: relative; overflow: hidden; }
+.picker__bar {
+  position: absolute; left: 16px; right: 16px; bottom: 0; height: 2px; border-radius: 2px;
+  background: var(--accent); transform-origin: left; transform: scaleX(0); opacity: 0;
+}
+.picker.is-playing .picker__bar { opacity: 1; animation: pickerFill var(--dwell) linear forwards; }
+@keyframes pickerFill { to { transform: scaleX(1); } }
+
+/* Mobile carousel: a wider peek of the next screen, and a swipe cue. */
+.carousel__item { flex-basis: 78%; }
+.carousel__hint { color: var(--text-3); }
+@media (prefers-reduced-motion: reduce) { .picker__bar { display: none; } }
