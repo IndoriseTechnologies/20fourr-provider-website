@@ -47,7 +47,10 @@ export default function BookingCarousel({ steps }) {
   return (
     <div className="carousel" role="group" aria-roledescription="carousel" aria-label="Booking flow, step by step">
       <div className="carousel__head">
-        <p className="carousel__pos" aria-live="polite">Step {active + 1} of {steps.length}</p>
+        <p className="carousel__pos" aria-live="polite">
+          Step {active + 1} of {steps.length}
+          <span className="carousel__hint" aria-hidden="true"> &middot; swipe</span>
+        </p>
 
         <div className="carousel__arrows">
           <button
