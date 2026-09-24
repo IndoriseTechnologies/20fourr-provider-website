@@ -854,3 +854,59 @@ export function queryProviders({ category, city, sortBy, page = 1 } = {}) {
     offset,
   };
 }
+
+/* ============================================================
+   City × service landing pages (/security-guards-in-mumbai …)
+   ------------------------------------------------------------
+   One page per category-and-city combination that holds enough
+   providers to be a page in its own right. The same threshold
+   gates the sitemap, so a page exists exactly when it would be
+   worth submitting.
+   ============================================================ */
+
+/** Below this many providers a combination stays a filter view, not a page. */
+export const MIN_PROVIDERS_FOR_LISTING = 3;
+
+/** What each category has to clear — the same lines the homepage tiers show. */
+export const CATEGORY_REQUIREMENT = {
+  guard: 'PSARA licence · Govt ID · Live selfie',
+  bouncer: 'PSARA licence · Govt ID · Live selfie',
+  gunman: 'Firearm licence verified per booking · PSARA',
+  pso: 'Highest tier · PSARA re-checked per booking',
+};
+
+export function citySlug(city) {
+  return city.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+export function comboSlug(category, city) {
+  return `${CATEGORY_PLURAL[category].replace(/\s+/g, '-')}-in-${citySlug(city)}`;
+}
+
+let combos;
+/** Every published combination, in category then city order. */
+export function comboPages() {
+  if (!combos) {
+    combos = CATEGORY_ORDER.flatMap((category) =>
+      FILTER_CITIES.filter((city) => queryProviders({ category, city }).total >= MIN_PROVIDERS_FOR_LISTING).map(
+        (city) => ({ category, city, slug: comboSlug(category, city) })
+      )
+    );
+  }
+  return combos;
+}
+
+export function findCombo(slug) {
+  return comboPages().find((c) => c.slug === slug);
+}
+
+/** The published page for a category-and-city filter, if there is one. */
+export function comboFor(category, city) {
+  if (!category || !city) return undefined;
+  return comboPages().find((c) => c.category === category && c.city === city);
+}
+
+/** Lowest day rate among a set of providers, in rupees. */
+export function lowestRate(providers) {
+  return providers.reduce((min, p) => Math.min(min, p.dailyRate), Infinity);
+}

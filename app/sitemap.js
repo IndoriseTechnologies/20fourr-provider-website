@@ -1,6 +1,9 @@
 import {
   CATEGORY_ORDER,
+  comboPages,
   FILTER_CITIES,
+  LISTINGS_ARE_SAMPLE,
+  MIN_PROVIDERS_FOR_LISTING,
   PROVIDERS,
   queryProviders,
 } from './security-providers/data';
@@ -38,7 +41,8 @@ function listingUrl({ category, city, page = 1 }) {
  * slot on them. Raise this as inventory grows; lower it toward 1 to submit
  * more of the long tail once the domain has the authority to get it indexed.
  */
-const MIN_PROVIDERS_FOR_LISTING = 3;
+// MIN_PROVIDERS_FOR_LISTING lives in data.js: the same threshold decides which
+// category-and-city combinations get their own landing page.
 
 /**
  * At most one entry per filter — page 1. An empty or thin combination (say,
@@ -88,9 +92,14 @@ export default function sitemap() {
     // ("bouncer in Mumbai"), so it is worth listing every combination that
     // clears the threshold above — the ones thin enough to go unindexed are
     // held back until they have the providers to earn the slot.
-    ...CATEGORY_ORDER.flatMap((category) =>
-      FILTER_CITIES.flatMap((city) => listingEntry({ category, city }, 0.7))
-    ),
+    // Once listings are real, each combination is submitted at its own clean URL
+    // (/security-guards-in-mumbai), which is also the filter view's canonical.
+    // While they are sample data those pages are noindex, so the query form stays.
+    ...(LISTINGS_ARE_SAMPLE
+      ? CATEGORY_ORDER.flatMap((category) =>
+          FILTER_CITIES.flatMap((city) => listingEntry({ category, city }, 0.7))
+        )
+      : comboPages().map((c) => ({ url: `${BASE}/${c.slug}`, changeFrequency: 'weekly', priority: 0.7 }))),
 
     ...PROVIDERS.map((p) => ({
       url: `${BASE}/security-providers/${p.id}`,

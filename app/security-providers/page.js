@@ -13,6 +13,8 @@ import {
   CATEGORY_LABEL,
   CATEGORY_PLURAL,
   CATEGORY_SERVICE_PHRASE,
+  comboFor,
+  comboPages,
   LISTINGS_ARE_SAMPLE,
   PAGE_SIZE,
   parseSearchParams,
@@ -37,6 +39,11 @@ export const revalidate = 3600;
  * results do not exist.
  */
 function canonicalFor({ category, city, page }) {
+  // A category-and-city view with its own landing page canonicalises to it once
+  // the listings are real (while they are sample data that page is noindex, and
+  // a canonical must not point at a noindex URL).
+  const combo = !LISTINGS_ARE_SAMPLE && page <= 1 ? comboFor(category, city) : undefined;
+  if (combo) return `/${combo.slug}`;
   const q = new URLSearchParams();
   if (category) q.set('category', category);
   if (city) q.set('city', city);
@@ -148,6 +155,19 @@ export default async function ProvidersPage({ searchParams }) {
               <Pager page={page} pages={pages} params={{ category, city, sortBy }} />
             </>
           )}
+
+          <nav className="popular" aria-labelledby="popular-h">
+            <h2 className="h-d3" id="popular-h">Popular searches</h2>
+            <ul className="popular__list">
+              {comboPages().map((c) => (
+                <li key={c.slug}>
+                  <Link href={`/${c.slug}`} prefetch={false}>
+                    {CATEGORY_PLURAL[c.category].replace(/^./, (m) => m.toUpperCase())} in {c.city}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
           <p className="coverage-note">
             A provider that lists more than one city appears under each of them, as long as a

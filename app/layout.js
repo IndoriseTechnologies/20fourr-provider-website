@@ -1,45 +1,39 @@
 import './globals.css';
-import { Big_Shoulders, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
+
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/JsonLd';
 import { LEGAL_NAME, ORG_ID, SITE_URL } from './site';
 
-/* Self-hosted at build time by next/font — no third-party request at runtime,
-   and no layout shift, which a <link> to fonts.googleapis.com cannot promise.
-   Google folded "Big Shoulders Display" into "Big Shoulders" with an optical-size
-   axis; opsz is what makes it behave at both headline and card-title size. */
-const display = Big_Shoulders({
-  subsets: ['latin'],
-  axes: ['opsz'],
+/* Self-hosted, trimmed copies of the three brand faces (app/fonts/, built by
+   scripts/build-fonts.py): only the weights the design system uses and only
+   the characters the copy contains, ₹ included, in one file per family.
+   ~61 KB for all three, against ~140 KB for next/font/google's latin +
+   latin-ext pairs. next/font/local still hashes, preloads and generates the
+   metric-adjusted fallback, so there is no layout shift when they swap in. */
+const display = localFont({
+  src: './fonts/big-shoulders.woff2',
+  weight: '300 500',
   variable: '--font-display',
   display: 'swap',
-  // adjustFontFallback: true was tried here (per a CLS finding: div.hero__glow
-  // shifts ~0.169 on the homepage when this font swaps in) but Next.js's
-  // automatic metric calculation fails for this specific variable font/axis
-  // combination ("Failed to find font override values for font `Big
-  // Shoulders`" at build time) — it silently produces no adjustment at all, so
-  // flipping this to true doesn't fix the CLS issue, it just fails quietly.
-  // Fixing this for real needs next/font/local with hand-measured
-  // ascentOverride/descentOverride/lineGapOverride against the actual font
-  // file, which needs visual verification this pass didn't include — flagging
-  // for a follow-up rather than shipping a fallback change that doesn't work.
-  adjustFontFallback: false,
   fallback: ['Arial Narrow', 'Helvetica Neue', 'sans-serif'],
 });
 
-const body = IBM_Plex_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
+const body = localFont({
+  src: './fonts/ibm-plex-sans.woff2',
+  weight: '400 600',
   variable: '--font-body',
   display: 'swap',
+  fallback: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
 });
 
-const mono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
+const mono = localFont({
+  src: './fonts/ibm-plex-mono.woff2',
+  weight: '500',
   variable: '--font-mono',
   display: 'swap',
+  fallback: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
 });
 
 // The Devanagari face is loaded only in app/join/hi/layout.js — it's needed on

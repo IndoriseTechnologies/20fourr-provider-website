@@ -21,6 +21,9 @@ import { PROVIDER_APP_URL } from '@/app/site';
  */
 const PATH = { en: '/join', hi: '/join/hi' };
 
+// The language links do not prefetch: prefetching /join/hi from /join pulls in
+// its three Devanagari weights (~230 KB) for a page most visitors never open.
+
 function WhatsAppIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -48,14 +51,14 @@ export default function JoinBody({ lang = 'en' }) {
           {/* The note points at the other language, so it is also the link to
               it — a visitor who wants Hindi should not have to find the toggle
               to act on a line that just told them Hindi exists. */}
-          <Link className="langbar__note" href={PATH[lang === 'hi' ? 'en' : 'hi']}>
+          <Link className="langbar__note" href={PATH[lang === 'hi' ? 'en' : 'hi']} prefetch={false}>
             {t.langNote}
           </Link>
           <nav className="langtoggle" aria-label="Language">
-            <Link href={PATH.en} aria-current={lang === 'en' ? 'page' : undefined} lang="en">
+            <Link href={PATH.en} prefetch={false} aria-current={lang === 'en' ? 'page' : undefined} lang="en">
               English
             </Link>
-            <Link href={PATH.hi} aria-current={lang === 'hi' ? 'page' : undefined} lang="hi">
+            <Link href={PATH.hi} prefetch={false} aria-current={lang === 'hi' ? 'page' : undefined} lang="hi">
               हिंदी
             </Link>
           </nav>

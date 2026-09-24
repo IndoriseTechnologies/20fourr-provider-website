@@ -80,7 +80,7 @@ or where the value must not step down on paper (`.btn--primary` stays full `--am
 adjacent dark sections. `.band--paper` is a document band. Cards on paper are cut out by a
 hairline, not by a fill — `--bg-2` equals the ground there on purpose.
 
-**Type.** Loaded through `next/font/google` in `app/layout.js`, self-hosted at build time,
+**Type.** Self-hosted from `app/fonts/` through `next/font/local` in `app/layout.js` (see Fonts below),
 so there is no runtime request to Google and no layout shift.
 
 - `--display` — **Big Shoulders**, set **light (300) and UPPERCASE** at a restrained size.
@@ -223,19 +223,22 @@ There are deliberately **no traction claims** — no guard counts, no city count
 "trusted by N businesses". Add them when they are true. On a page whose entire argument is
 verifiability, an invented number is the one thing that can't be there.
 
+## City × service pages
+
+`app/[slug]/page.js` builds one landing page per category-and-city combination with at least
+`MIN_PROVIDERS_FOR_LISTING` providers (`/security-guards-in-mumbai`, `/bouncers-in-delhi` …);
+any other slug 404s. They are linked from "Popular searches" on `/security-providers` and from
+each other. While `LISTINGS_ARE_SAMPLE` is true they are `noindex` and the sitemap keeps the
+query-string form; flipping it publishes them, submits them to the sitemap and makes them the
+canonical for the matching filter view.
+
+## Fonts
+
+The three faces are self-hosted from `app/fonts/`, trimmed to the weights and characters the
+site uses by `scripts/build-fonts.py` (needs `pip install fonttools brotli`). Re-run it after
+adding copy with a character outside its `CHARSET`.
+
 ## Not built yet
 
-1. City × service pages (`/security-guards-in-mumbai`) — the main organic channel for a
-   marketplace. Build with `generateStaticParams()`.
-2. `/for-business` as its own page with a real lead form.
-3. The legal set.
-
-## `index.html`
-
-The standalone single-file version of the home page, kept as the published design
-reference. It is not part of the Next build and Next ignores it. It will drift from
-`app/page.js` — treat `app/` as the source of truth.
-
-**It has drifted.** It is still on the old seal-green palette and the serif display face;
-the ink/paper/amber system above has been applied to `app/` only. Either re-theme it or
-delete it — a "design reference" that contradicts the built site is worse than none.
+1. `/for-business` as its own page with a real lead form.
+2. The legal set.
