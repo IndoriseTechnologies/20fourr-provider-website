@@ -1,0 +1,9 @@
+node_modules
+.next
+out
+.env*.local
+.DS_Store
+*.tsbuildinfo
+
+# design review captures (regenerated per build)
+.impeccable/review/
