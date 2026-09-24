@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight } from '@/components/Icons';
 
@@ -78,14 +79,15 @@ export default function BookingCarousel({ steps }) {
             ref={(el) => { itemRefs.current[i] = el; }}
           >
             <div className="step__stage">
-              <img
+              <Image
                 className="step__shot"
                 src={s.src}
                 alt={s.alt}
                 width={s.w}
                 height={s.ht}
+                sizes="(max-width: 600px) 80vw, 260px"
+                quality={85}
                 loading="lazy"
-                decoding="async"
               />
               <span className="step__n">{s.kicker}</span>
             </div>

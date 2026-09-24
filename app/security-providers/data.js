@@ -18,6 +18,14 @@
    app from here meets the same words in the same order.
    ============================================================ */
 
+/**
+ * The listings below are sample data that demonstrate the directory. While this
+ * is true, /security-providers and every profile say so on the page, and
+ * schema.js keeps the sample ratings out of structured data. Flip it to false
+ * once the directory is fed by the booking platform.
+ */
+export const LISTINGS_ARE_SAMPLE = true;
+
 /** Title Case and singular — these label one provider's role. */
 export const CATEGORY_LABEL = {
   guard: 'Security Guard',

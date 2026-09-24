@@ -160,7 +160,7 @@ export const FAQ_GROUPS = [
       },
       {
         q: 'What does it cost to list?',
-        a: 'Listing is free. 20fourr charges a platform fee on completed bookings, which is shown transparently to the client as part of the price breakdown.',
+        a: 'Listing is free. 20fourr charges providers a 15% platform commission (plus GST on that commission) on completed bookings only. The client sees their own itemised price breakdown before paying.',
       },
       {
         q: 'How long does verification take?',

@@ -140,14 +140,13 @@ end state instead.
 
 ## Content that still needs filling in
 
-- **`WHATSAPP_URL`** in `app/join/content.js` — currently a placeholder number.
 - **`metadataBase`** in `app/layout.js` and the URLs in `app/sitemap.js` / `app/robots.js`
   — currently `https://secureconnect.in`.
 - **App Store / Play Store links** — the download buttons are `href="#"`.
 - **Legal pages** — the footer links to `/terms`, `/privacy`, `/refunds`, `/grievance`.
   These routes do not exist yet and are mandatory for both app stores and Razorpay.
-- **Photography.** Two supplied images are now live in the `/join` hero
-  (`public/roles/guard.jpg`, `public/roles/gunman.jpg`); the `BNC` frame is still a plate.
+- **Photography.** `public/roles/guard.jpg` and `bouncer.jpg` are live in the `/join` hero;
+  the `GUN` frame is a plate (the previous photo showed a police officer and was removed).
   **Both need review before this ships — see "Calls worth revisiting" below.** The original
   rule has not changed: an implied provider who is not a provider is worse than an empty
   frame.
@@ -182,7 +181,7 @@ repo's, not the Figma's, apart from the client hero and the duty-log state names
 
 ## Calls worth revisiting
 
-**`public/roles/gunman.jpg` shows a police officer, labelled "Armed gunman".** The chest
+**Resolved: the armed-gunman photo showed a police officer and has been removed.** The chest
 plate reads **POLICE** and it is legible at rendered size, sitting directly above the role
 label. PSARA private security is legally distinct from police, and state PSARA rules
 restrict uniforms resembling police precisely because the confusion matters. A page whose

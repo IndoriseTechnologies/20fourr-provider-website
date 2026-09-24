@@ -1,3 +1,4 @@
+import Crumbs from '@/components/Crumbs';
 import JsonLd from '@/components/JsonLd';
 import { LEGAL_NAME, SITE_URL } from '../site';
 
@@ -48,8 +49,9 @@ export default function GrievancePage() {
         <div className="hero__glow" />
         <div className="wrap">
           <div className="stack g-20">
-            <p className="eyebrow">Legal &middot; Draft</p>
+            <Crumbs trail={[{ label: 'Legal' }]} />
             <h1>Grievance officer</h1>
+            <p className="doc-status"><span className="label">Draft</span></p>
             <div className="callout">
               <p>
                 <b>Draft &mdash; the officer&rsquo;s name below is a placeholder.</b> This page

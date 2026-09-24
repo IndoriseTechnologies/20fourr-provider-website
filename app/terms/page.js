@@ -1,3 +1,4 @@
+import Crumbs from '@/components/Crumbs';
 import JsonLd from '@/components/JsonLd';
 import JumpNav from './JumpNav';
 import { LEGAL_NAME, SITE_URL } from '../site';
@@ -71,8 +72,9 @@ export default function TermsPage() {
         <div className="hero__glow" />
         <div className="wrap">
           <div className="stack g-20">
-            <p className="eyebrow">Legal &middot; Draft</p>
+            <Crumbs trail={[{ label: 'Legal' }]} />
             <h1>Terms of service</h1>
+            <p className="doc-status"><span className="label">Draft</span></p>
             <div className="callout">
               <p>
                 <b>This page is a working draft, not a finished agreement.</b> Sections that

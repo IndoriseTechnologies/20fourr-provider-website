@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 
 /**
@@ -62,7 +63,7 @@ export default function StepPicker({ steps }) {
       <div className="picker__stage stage" id="picker-stage" role="tabpanel" aria-labelledby={`picker-tab-${active}`}>
         <div className="picker__frame">
           {steps.map((s, i) => (
-            <img
+            <Image
               key={s.n}
               className={`picker__shot${i === active ? ' is-on' : ''}`}
               src={s.src}
@@ -70,8 +71,9 @@ export default function StepPicker({ steps }) {
               aria-hidden={i === active ? undefined : true}
               width={s.w}
               height={s.ht}
+              sizes="310px"
+              quality={85}
               loading={i < 2 ? 'eager' : 'lazy'}
-              decoding="async"
             />
           ))}
         </div>

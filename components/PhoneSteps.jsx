@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 /**
  * A numbered row of app screenshots on amber plates, used by BookingSteps and
  * DutySteps. Presentation only — each caller owns its own screens and copy.
@@ -22,14 +24,15 @@ export default function PhoneSteps({ steps, variant = '' }) {
       {steps.map((s) => (
         <li className="step" key={s.n}>
           <div className="step__stage">
-            <img
+            <Image
               className="step__shot"
               src={s.src}
               alt={s.alt}
               width={s.w}
               height={s.ht}
+              sizes="(max-width: 600px) 80vw, 260px"
+              quality={85}
               loading="lazy"
-              decoding="async"
             />
             <span className="step__n">{s.kicker}</span>
           </div>

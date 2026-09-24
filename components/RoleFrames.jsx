@@ -1,3 +1,6 @@
+import Image from 'next/image';
+import { ShieldCheckIcon } from '@/components/Icons';
+
 /**
  * The three roles a provider can sign up as, shown as frames rather than a list.
  *
@@ -18,8 +21,12 @@ export default function RoleFrames({ roles }) {
       {roles.map((r) => (
         <figure className={`role${r.src ? ' role--photo' : ''}`} key={r.code}>
           {r.src ? (
-            <img className="role__img" src={r.src} alt={r.alt} loading="lazy" />
-          ) : null}
+            <Image className="role__img" src={r.src} alt={r.alt} fill sizes="(max-width: 900px) 33vw, 180px" quality={75} />
+          ) : (
+            <span className="role__mark" aria-hidden="true">
+              <ShieldCheckIcon />
+            </span>
+          )}
           <figcaption className="role__plate">
             <span className="role__code">{r.code}</span>
             <span className="role__name">{r.name}</span>

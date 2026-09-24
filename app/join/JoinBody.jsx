@@ -67,7 +67,6 @@ export default function JoinBody({ lang = 'en' }) {
         <div className="hero__glow" />
         <div className="wrap jhero__grid">
           <div className="jhero__in">
-            <p className="eyebrow">{t.eyebrow}</p>
             <h1>{t.title}</h1>
             <p className="jhero__sub">{t.sub}</p>
             <div className="jhero__ctas">
@@ -79,7 +78,9 @@ export default function JoinBody({ lang = 'en' }) {
                 {t.ctaApp}
               </a>
             </div>
-            <p className="hero__fine">{t.fine}</p>
+            <p className="hero__fine">
+              {t.eyebrow} &middot; {t.fine}
+            </p>
           </div>
 
           <RoleFrames roles={t.roles} />
@@ -90,7 +91,7 @@ export default function JoinBody({ lang = 'en' }) {
       <section className="band" style={{ paddingBlock: 'clamp(48px,6vw,80px)' }}>
         <div className="wrap">
           <Reveal className="head">
-            <p className="eyebrow">{t.moneyHead}</p>
+            <h2 className="h-d3">{t.moneyHead}</h2>
           </Reveal>
           <Reveal className="money">
             {t.money.map((m) => (
@@ -164,7 +165,7 @@ export default function JoinBody({ lang = 'en' }) {
       </section>
 
       {/* ---------- documents ---------- */}
-      <section className="band band--paper">
+      <section className="band band--ink-2">
         <div className="wrap">
           <Reveal className="head">
             <h2>{t.docsHead}</h2>
