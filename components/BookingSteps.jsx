@@ -1,4 +1,5 @@
 import BookingCarousel from '@/components/BookingCarousel';
+import StepPicker from '@/components/StepPicker';
 
 /**
  * The eight client screens a booking walks through, in order: search, profile,
@@ -7,11 +8,12 @@ import BookingCarousel from '@/components/BookingCarousel';
  * Source: mobile/client-app-screens.html — screens 13, 15, 16, 17, 18, 19, 20, 21.
  * See PhoneSteps for why these are screenshots rather than drawn screens.
  *
- * Rendered one step at a time via BookingCarousel at every width, not just on
- * mobile: eight full-size screenshots demanding attention in one static grid
- * invited skimming exactly where this section needs sequential attention —
- * the two disclaimer gates included. DutySteps' own three-item grid is a
- * separate, smaller case and keeps PhoneSteps' static layout.
+ * Rendered one step at a time at every width: StepPicker (a step list beside
+ * one phone stage) on desktop, BookingCarousel (swipe) on mobile. Eight
+ * screenshots in one static grid invited skimming exactly where this section
+ * needs sequential attention — the two disclaimer gates included. Only one of
+ * the two is displayed at a time (see .booking__wide / .booking__narrow), and a
+ * display:none subtree neither loads its lazy images nor reaches assistive tech.
  */
 
 const STEPS = [
@@ -98,5 +100,14 @@ const STEPS = [
 ];
 
 export default function BookingSteps() {
-  return <BookingCarousel steps={STEPS} />;
+  return (
+    <>
+      <div className="booking__wide">
+        <StepPicker steps={STEPS} />
+      </div>
+      <div className="booking__narrow">
+        <BookingCarousel steps={STEPS} />
+      </div>
+    </>
+  );
 }

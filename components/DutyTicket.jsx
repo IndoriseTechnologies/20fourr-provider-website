@@ -24,20 +24,24 @@ const ROWS = [
 export default function DutyTicket() {
   return (
     <div className="ticket play" style={{ '--rows': ROWS.length }}>
-      <div className="ticket__hd">Duty ticket</div>
+      <div className="ticket__hd">
+        <span className="label">Duty ticket</span>
+        {/* A count of what the rows below show, not a claim about any real booking. */}
+        <span className="ticket__count label">
+          {ROWS.length} of {ROWS.length} recorded
+        </span>
+      </div>
 
-      <div className="ticket__rows">
+      <ol className="ticket__rows">
         {ROWS.map((r, i) => (
           /* --i drives the reveal delay, so adding or removing a row
              re-times the sequence on its own — see .ticket.play in globals.css */
-          <div className="trow" key={i} style={{ '--i': i }}>
+          <li className="trow" key={i} style={{ '--i': i }}>
             <span className="trow__dot" aria-hidden="true" />
             <span className="trow__t">{r}</span>
-          </div>
+          </li>
         ))}
-      </div>
-
-      {/* <div className="ticket__ft">&#8377;987.60 advance released to guard</div> */}
+      </ol>
     </div>
   );
 }

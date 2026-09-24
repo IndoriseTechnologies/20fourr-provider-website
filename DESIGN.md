@@ -70,7 +70,7 @@ Scale (fluid display steps jump steeply; text steps are fixed):
 
 | Token | Size | Use |
 |---|---|---|
-| `--fs-d1` | 43 → 76px | The page's one `h1` |
+| `--fs-d1` | 42 → 64px | The page's one `h1` |
 | `--fs-d2` | 34 → 52px | Section heads |
 | `--fs-d3` | 24 → 32px | Sub-section heads |
 | `--fs-xl` | 20px | Card and step titles |
@@ -123,6 +123,30 @@ head always sits closer to its own content than to the previous section.
 - Inputs and selects: `--bg-2` fill, `--line-strong` border, 48px tall, same radius as buttons,
   so a select beside a button reads as one row.
 - Every interactive element has a visible `:focus-visible` ring: 2px amber, 3px offset.
+
+## Components
+
+Reuse these before inventing a new container. All read the semantic layer, so they work on ink
+and on paper.
+
+| Class | What it is | Use for |
+|---|---|---|
+| `.sechead` | Section `h2` + `.lede`, 24px apart, `--head-y` above content | Every section opening. `--sub` for a second head inside one band |
+| `.h-d3` | Display face at `--fs-d3` on any element | Sub-section heads that are not `h2` in the outline |
+| `.split` / `.split__aside` | 5/7 grid, aside optionally sticky | Heading beside a long list (badges, FAQ) |
+| `.stage` / `.step__stage` | Deep inset panel, amber wash from above, faint dot grid | Behind every app screenshot. Screenshots already carry their device outline — never add a second bezel |
+| `.step__n` | Mono status pill pinned to a stage's top-left | The *state* a screenshot shows (Accepted, Rated, Step 01) |
+| `.picker` | Step list (WAI-ARIA tablist) beside one sticky stage | A sequence of screens read one at a time, desktop. `.carousel` is its mobile form |
+| seam grid (`.tiers4`, `.badges`) | 1px `--line` gaps, outer radius `--r-lg` | Sets of peer items that belong to one table |
+| `.rule` | Raised card: icon tile, title, body, label footer | Stand-alone guarantees |
+| `.notice` | Panel with a mono header strip and columns | A caution the visitor must read (the paper band) |
+| `.ledger` | Panel with a header strip and key/value rows (`dl`) | Named consequences, statutes, terms |
+| `.aside-panel` | Panel with a meta strip | Content for a secondary audience inside a page for another |
+| `.closer` | Large panel with an amber glow | The page's final call to action |
+| `.bookbar` | Select + primary button in one bar | A choice that retargets the one action beside it |
+| `.label` | Mono 11px uppercase, `--text-3` | Codes, states, column names, card footers — placed **after** or beside a title, never above it |
+
+Card anatomy is always: title → body → metadata. A label never precedes the heading it belongs to.
 
 ## Motion
 

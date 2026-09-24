@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Reveal from '@/components/Reveal';
+import { ArrowRight } from '@/components/Icons';
 import { FAQ_GROUPS } from '@/app/faqs/content';
 
 /**
@@ -21,28 +21,26 @@ const HOME_FAQS = HOME_FAQ_QUESTIONS.map((q) => ALL_ITEMS.find((item) => item.q 
 
 export default function HomeFaq() {
   return (
-    <section className="band band--paper" id="faqs">
-      <div className="wrap">
-        <Reveal className="head">
-          <p className="eyebrow">Before you book</p>
+    <section className="band band--ink-2" id="faqs">
+      <div className="wrap split">
+        <div className="split__aside">
           <h2>Questions people ask first.</h2>
           <p className="lede">
             The short version of the answers below the price, the badges and the cancellation clock.
           </p>
-        </Reveal>
+          <Link className="text-link" href="/faqs">
+            See all FAQs <ArrowRight />
+          </Link>
+        </div>
 
-        <Reveal className="faq">
+        <div className="faq">
           {HOME_FAQS.map((f) => (
             <details className="qa" key={f.q}>
               <summary>{f.q}</summary>
               <p className="qa__a">{f.a}</p>
             </details>
           ))}
-        </Reveal>
-
-        <p style={{ marginTop: 28 }}>
-          <Link className="text-link" href="/faqs">See all FAQs &rarr;</Link>
-        </p>
+        </div>
       </div>
     </section>
   );

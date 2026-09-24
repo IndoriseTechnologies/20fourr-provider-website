@@ -2,6 +2,7 @@
 
 import { useId, useState } from 'react';
 import Link from 'next/link';
+import { ArrowRight } from '@/components/Icons';
 
 /**
  * The hero's one CTA, plus the city picker beside it.
@@ -18,11 +19,12 @@ export default function HeroBooking({ cities, defaultHref = '#book' }) {
 
   return (
     <div className="stack g-16">
-      <div className="hero__ctas">
+      {/* One bar, two parts: the picker is an input, not a second action. */}
+      <div className="bookbar">
         <label className="visually-hidden" htmlFor={selectId}>Choose your city</label>
         <select
           id={selectId}
-          className="hero__city"
+          className="bookbar__city"
           value={city}
           onChange={(e) => setCity(e.target.value)}
         >
@@ -31,7 +33,9 @@ export default function HeroBooking({ cities, defaultHref = '#book' }) {
             <option key={c} value={c}>{c}</option>
           ))}
         </select>
-        <Link className="btn btn--primary" href={href}>Book verified security</Link>
+        <Link className="btn btn--primary bookbar__go" href={href}>
+          Book verified security <ArrowRight />
+        </Link>
       </div>
       <Link className="hero__verify" href="#trust">See how we verify providers</Link>
     </div>

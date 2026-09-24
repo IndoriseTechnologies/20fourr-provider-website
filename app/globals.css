@@ -69,7 +69,7 @@
   --fs-xl:  1.25rem;   /* 20 — card titles */
   --fs-d3:  clamp(1.5rem, 1.1rem + 1.3vw, 2rem);        /* sub-section heads */
   --fs-d2:  clamp(2.1rem, 1.35rem + 2.6vw, 3.25rem);    /* section heads */
-  --fs-d1:  clamp(2.7rem, 1.5rem + 4.3vw, 4.75rem);     /* the one h1 */
+  --fs-d1:  clamp(2.6rem, 1.5rem + 3vw, 4rem);          /* the one h1 */
 
   --lh-display: 1;
   --lh-snug:    1.3;
@@ -335,269 +335,9 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 }
 .text-link:hover { text-decoration: underline; text-underline-offset: .3em; }
 
-/* ---------- nav ---------- */
-.nav {
-  position: sticky; top: 0; z-index: 60;
-  background: color-mix(in srgb, var(--ink) 88%, transparent);
-  backdrop-filter: saturate(1.4) blur(14px);
-  border-bottom: 1px solid var(--hair);
-  color: var(--text);
-}
-.nav__in { display: flex; align-items: center; gap: 32px; height: 66px; }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); flex-shrink: 0; }
-.brand__mark { width: 22px; height: 26px; flex-shrink: 0; }
-/* The wordmark holds one step more weight than the headings — at 22px a
-   300 would disappear against the nav's own hairline. */
-.brand__name {
-  font-family: var(--display); font-size: 1.38rem; font-weight: 500;
-  letter-spacing: .045em; text-transform: uppercase;
-  font-variation-settings: "opsz" 22;
-}
-.nav__links { display: flex; align-items: center; gap: clamp(16px, 1.8vw, 26px); margin-left: auto; }
-/* Plex Sans is wider than a system grotesque — without this the link row
-   wraps to two lines and breaks the 66px bar. */
-.nav__links a { font-size: .89rem; color: var(--text-2); text-decoration: none; white-space: nowrap; transition: color .15s ease; }
-.nav__links a:hover { color: var(--text); }
-.nav__cta { display: flex; align-items: center; gap: 10px; }
-/* Hamburger toggle: hidden above 900px, where the link row shows inline. */
-.nav__toggle {
-  display: none; flex-direction: column; justify-content: center; align-items: center;
-  gap: 5px; width: 40px; height: 40px; margin-left: auto;
-  background: transparent; border: 1px solid var(--line); border-radius: 6px;
-  cursor: pointer; padding: 0;
-}
-.nav__toggle-bar { width: 18px; height: 2px; background: var(--text); transition: transform .15s ease, opacity .15s ease; }
-.nav--open .nav__toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.nav--open .nav__toggle-bar:nth-child(2) { opacity: 0; }
-.nav--open .nav__toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-@media (max-width: 900px) {
-  .nav__links { display: none; }
-  .nav__in { gap: 16px; }
-  .nav__toggle { display: flex; }
-  /* .nav keeps `position: sticky`, which is also a positioning context, so
-     this panel anchors to the 66px bar rather than the viewport. */
-  .nav--open .nav__links {
-    display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
-    position: absolute; top: 66px; left: 0; right: 0;
-    background: var(--ink); border-bottom: 1px solid var(--hair);
-    padding: 8px var(--gut) 16px; margin-left: 0;
-  }
-  .nav--open .nav__links a { padding: 10px 0; width: 100%; }
-}
-/* Below 760px both nav CTAs step down to the same quiet, outlined weight
-   rather than one of them dropping — the audience split ("guard" vs "client")
-   has to stay legible before a visitor scrolls. The loud amber fill is
-   reserved for the hero CTA and the sticky bar that takes over once it
-   scrolls out of view (see .stickybar) — never both at once. */
-@media (max-width: 760px) {
-  .nav__cta .btn--primary,
-  .nav__cta .btn--ghost {
-    background: transparent; border-color: var(--line); color: var(--text);
-    padding: 10px 14px; font-size: .78rem;
-  }
-  .nav__cta .btn--primary:hover,
-  .nav__cta .btn--ghost:hover { border-color: var(--text-2); background: color-mix(in srgb, var(--text) 6%, transparent); }
-}
-.btn__label-short { display: none; }
-/* Below ~560px "Work as a guard" + "Book security" plus the wordmark no
-   longer fit on one 66px row. The wordmark drops to its mark (the logo
-   already carries the brand) and both labels shorten — same two links, same
-   destinations, just fewer letters. */
-@media (max-width: 560px) {
-  .brand__name { display: none; }
-  .nav__cta { gap: 8px; }
-  .nav__cta .btn--primary,
-  .nav__cta .btn--ghost { padding: 9px 12px; }
-  .btn__label-full { display: none; }
-  .btn__label-short { display: inline; }
-}
-
-/* ---------- hero ---------- */
-.hero {
-  background: var(--ink); color: var(--text);
-  position: relative; overflow: hidden;
-  padding-block: clamp(72px, 10vw, 140px) clamp(80px, 11vw, 152px);
-}
-.hero__glow {
-  position: absolute; inset: -30% -10% auto -10%; height: 90%;
-  background:
-    radial-gradient(50% 60% at 24% 32%, rgba(232, 163, 61, .11), transparent 68%),
-    radial-gradient(44% 54% at 84% 16%, rgba(146, 160, 166, .07), transparent 70%);
-  pointer-events: none;
-}
-.hero__in { position: relative; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,440px); gap: clamp(40px, 5vw, 72px); align-items: center; }
-@media (max-width: 980px) { .hero__in { grid-template-columns: 1fr; } }
-/* Capped short so the headline stacks into three dense lines rather than
-   running the full column — the block is the shape, not the words. */
-.hero h1 { color: var(--text); max-width: 19ch; }
-.hero h1 em { font-style: normal; color: var(--amber); }
-.hero__sub { color: var(--text-2); font-size: clamp(1.06rem, 1.5vw, 1.22rem); max-width: 46ch; line-height: 1.58; }
-/* The subhead runs at the dimmer tone; a bolded word inside it steps up to the
-   full text colour rather than staying flat. Same pattern as .tcard__b b. */
-.hero__sub b { color: var(--text); font-weight: 500; }
-.hero__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
-/* The city picker sits beside the button as an input, not a second action —
-   filled-field treatment, same height as the button, so the row reads as
-   "choose, then book" rather than two competing choices. */
-.hero__city {
-  appearance: none;
-  background: var(--bg-2);
-  background-image: linear-gradient(45deg, transparent 50%, var(--text-2) 50%), linear-gradient(135deg, var(--text-2) 50%, transparent 50%);
-  background-position: calc(100% - 18px) 55%, calc(100% - 13px) 55%;
-  background-size: 5px 5px, 5px 5px;
-  background-repeat: no-repeat;
-  border: 1px solid var(--line);
-  border-radius: 0;
-  color: var(--text);
-  font-family: var(--body);
-  font-size: .92rem;
-  padding: 15px 40px 15px 16px;
-  min-width: 172px;
-  cursor: pointer;
-  transition: border-color .15s ease;
-}
-.hero__city:hover { border-color: var(--text-2); }
-.hero__city:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-@media (max-width: 560px) { .hero__city { width: 100%; } }
-/* Visually subordinate on purpose — the trust content it points at already
-   exists further down the page (see #trust); this is one click away, not a
-   second button competing with "Book verified security". */
-.hero__verify {
-  font-family: var(--mono); font-size: .8rem; color: var(--text-2);
-  text-decoration: underline; text-underline-offset: 4px;
-  display: inline-block;
-}
-.hero__verify:hover { color: var(--text); }
-[lang="hi"] .hero__verify { font-family: var(--deva); font-size: .88rem; }
-.hero__fine { font-family: var(--mono); font-size: .74rem; color: var(--text-2); letter-spacing: .03em; }
-.hero__fine a { color: var(--amber); }
-[lang="hi"] .hero__fine { font-family: var(--deva); letter-spacing: 0; font-size: .82rem; }
-
-/* ---------- duty ticket ----------
-   The hero's evidence object. Every row is a state that has been *proven*,
-   so every dot is green — this is the one component where the reserved
-   colour does all the work. Rows light up in sequence on load: the single
-   orchestrated moment on the site, and the only motion beyond a scroll fade. */
-.ticket {
-  border: 1px solid var(--hair); background: var(--ink-2);
-  padding: 26px 26px 28px; display: flex; flex-direction: column;
-  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, .9);
-}
-.ticket__hd {
-  font-family: var(--mono); font-size: .7rem; letter-spacing: .2em;
-  text-transform: uppercase; color: var(--steel);
-  padding-bottom: 18px; border-bottom: 1px solid var(--hair);
-}
-[lang="hi"] .ticket__hd { font-family: var(--deva); letter-spacing: .04em; text-transform: none; font-size: .84rem; }
-.ticket__rows { display: flex; flex-direction: column; }
-.trow {
-  display: grid; grid-template-columns: 9px minmax(0, 1fr);
-  gap: 14px; align-items: baseline;
-  padding-block: 17px;
-  border-bottom: 1px solid var(--hair);
-  opacity: 0; transform: translateY(5px);
-}
-.trow:last-child { border-bottom: 0; }
-.trow__dot {
-  width: 9px; height: 9px; border-radius: 50%;
-  background: var(--verified); align-self: center;
-  box-shadow: 0 0 0 3px rgba(63, 166, 107, .12);
-}
-.trow__t { font-size: .93rem; color: var(--text); line-height: 1.4; }
-.trow__t code {
-  font-family: var(--mono); font-size: .9em; color: var(--amber);
-  letter-spacing: .08em;
-}
-.ticket__ft {
-  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--hair);
-  font-family: var(--mono); font-size: .72rem; color: var(--amber);
-  font-variant-numeric: tabular-nums; letter-spacing: .02em;
-  opacity: 0;
-}
-[lang="hi"] .ticket__ft { font-family: var(--deva); letter-spacing: 0; font-size: .84rem; }
-
-/* The stagger is computed from each row's index (--i, set in DutyTicket.jsx)
-   rather than listed per nth-child. A hardcoded list silently breaks when a
-   row is added: the extra row matches no rule, inherits delay 0, and fades in
-   *first* — reversing the sequence the component exists to show. The footer
-   follows the row count (--rows) for the same reason. */
-.ticket.play .trow {
-  animation: logIn .5s cubic-bezier(.2,.7,.3,1) forwards;
-  animation-delay: calc(.30s + var(--i, 0) * .18s);
-}
-.ticket.play .ticket__ft {
-  animation: logIn .5s ease forwards;
-  animation-delay: calc(.38s + var(--rows, 5) * .18s);
-}
-
-@keyframes logIn { to { opacity: 1; transform: none; } }
-
-/* ---------- credential ticker ----------
-   Four bordered cells of prose replaced by one quiet band of mono microtext.
-   The claims are load-bearing but they are not the argument — the hero above
-   and the duty log below are. A ticker states them and gets out of the way. */
-.creds {
-  background: var(--ink-2);
-  border-block: 1px solid var(--hair);
-  color: var(--steel);
-}
-.creds__in {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 14px clamp(20px, 3.4vw, 44px);
-  padding-block: 22px;
-}
-.cred {
-  display: inline-flex; align-items: center; gap: 9px;
-  font-family: var(--mono); font-size: .78rem; letter-spacing: .028em;
-  white-space: nowrap;
-}
-/* a square, not the eyebrow's dot — same accent, different register */
-.cred::before {
-  content: "";
-  width: 6px; height: 6px;
-  background: var(--amber);
-  flex-shrink: 0;
-}
-[lang="hi"] .cred { font-family: var(--deva); letter-spacing: 0; font-size: .88rem; white-space: normal; }
-@media (max-width: 560px) {
-  .creds__in { justify-content: flex-start; gap: 12px 22px; }
-  .cred { font-size: .72rem; white-space: normal; }
-}
-
 /* ---------- section head ---------- */
 .head { display: flex; flex-direction: column; gap: 14px; max-width: 62ch; margin-bottom: clamp(48px, 6vw, 84px); }
 .head .lede { margin-top: 4px; }
-
-/* ---------- services ---------- */
-.svcs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.svc { background: var(--bg); padding: 26px 24px 28px; display: flex; flex-direction: column; gap: 12px; transition: background-color .18s ease; }
-.svc:hover { background: var(--bg-3); }
-.svc__code { font-family: var(--mono); font-size: .68rem; font-weight: 500; letter-spacing: .16em; color: var(--accent); }
-.svc__body { font-size: .92rem; color: var(--text-2); line-height: 1.55; flex: 1; }
-.svc__req { font-family: var(--mono); font-size: .68rem; color: var(--text-3); border-top: 1px dashed var(--line); padding-top: 12px; line-height: 1.5; }
-
-/* The four SERVICES cards only (not the search-intent cards above, which
-   share .svc but have no tier to escalate) — "the heavier the responsibility,
-   the more paperwork" shown, not just stated. Reuses the exact tone ramp
-   .tiers already established (muted -> amber -> charcoal) rather than adding
-   a fifth colour, and pairs it with the one axis IBM Plex Mono can't carry
-   for .svc__code — weight — on the display face instead, which is loaded
-   here as a full variable font. */
-.svc--l1 { border-top: 3px solid var(--line); }
-.svc--l1 h3 { font-weight: 400; }
-.svc--l2 { border-top: 3px solid color-mix(in srgb, var(--charcoal) 24%, var(--paper)); }
-.svc--l2 h3 { font-weight: 500; }
-.svc--l3 { border-top: 3px solid var(--amber); }
-.svc--l3 h3 { font-weight: 600; }
-.svc--l4 { border-top: 3px solid var(--charcoal); }
-.svc--l4 h3 { font-weight: 700; }
-.city-links { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.city-link { background: var(--bg); padding: 18px 20px; color: var(--text); text-decoration: none; font-size: .92rem; display: flex; justify-content: space-between; gap: 14px; }
-.city-link:hover { background: var(--bg-3); color: var(--accent); }
-@media (max-width: 800px) { .city-links { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .city-links { grid-template-columns: 1fr; } }
-@media (max-width: 1000px) { .svcs { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px)  { .svcs { grid-template-columns: 1fr; } }
 
 /* ---------- the log ----------
    One row pattern for every ordered sequence on the site: duty states,
@@ -630,31 +370,6 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 }
 .log__d { font-size: .93rem; color: var(--text-2); line-height: 1.6; max-width: 62ch; }
 .log__d code { font-family: var(--mono); font-size: .86em; color: var(--accent); }
-
-/* ---------- badges ----------
-   Cut by hairlines like .svcs and .trust rather than floated as separate rounded
-   cards: this page has no rounded card anywhere, and the grid has to read as one
-   table of checks, not eight loose tiles.
-   Two columns, because eight cards divide into four clean rows — three would
-   leave a ragged last row, and four would squeeze the provenance line. */
-.badges {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-  background: var(--line); border: 1px solid var(--line);
-}
-@media (max-width: 720px) { .badges { grid-template-columns: 1fr; } }
-.bcard { background: var(--bg); padding: 26px 24px 24px; display: flex; flex-direction: column; gap: 10px; }
-/* The badge name carries the accent, not a separate eyebrow above it — the name
-   *is* the label here, and a second amber line would ration nothing. */
-.bcard__k { font-size: clamp(1.05rem, 1.5vw, 1.2rem); color: var(--accent); }
-.bcard__b { font-size: .92rem; color: var(--text-2); line-height: 1.58; }
-/* Pinned to the foot so the provenance lines up across a row whatever the body
-   length — it reads as a column of its own, which is the point of stating it. */
-.bcard__m {
-  margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line-soft);
-  font-family: var(--mono); font-size: .66rem; letter-spacing: .12em;
-  text-transform: uppercase; color: var(--text-3);
-}
-.bcard__m b { color: var(--text-2); font-weight: 500; }
 
 /* narrow variant for a sidebar column: everything stacks, no key column */
 .log--narrow .log__row { grid-template-columns: minmax(0, 1fr); gap: 9px; }
@@ -690,43 +405,6 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
   .subhead--split { grid-template-columns: 1fr; gap: clamp(26px, 4vw, 36px); }
 }
 
-/* The claims read at card-title weight, not headline weight: they sit under an
-   h3 and must not out-rank it. The rule beneath each is amber but held at half
-   strength — three full-saturation lines in one block would spend the accent
-   the rest of the page rations. */
-.claims { list-style: none; margin: 0; padding: 0; }
-.claim {
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: clamp(1.22rem, 1.9vw, 1.55rem);
-  line-height: 1.14;
-  letter-spacing: .008em;
-  font-variation-settings: "opsz" 24;
-  text-wrap: balance;
-  padding-bottom: clamp(14px, 1.6vw, 20px);
-  border-bottom: 1px solid color-mix(in srgb, var(--accent) 52%, transparent);
-}
-.claim + .claim { margin-top: clamp(16px, 1.9vw, 24px); }
-.claim em { font-style: normal; color: var(--accent); }
-
-/* ---------- price cta (closes the trust sequence) ----------
-   Centred, which nothing else on the page is. That is deliberate and it is why
-   the hairline above it matters: the rule ends the argument, the centring says
-   the section is over, and the button is the only thing left to do. */
-.pricecta {
-  margin-top: clamp(56px, 7vw, 96px);
-  padding-top: clamp(44px, 5.5vw, 72px);
-  border-top: 1px solid var(--line);
-  display: flex; flex-direction: column; align-items: center; text-align: center;
-  gap: clamp(16px, 2vw, 22px);
-}
-.pricecta h2 { max-width: 20ch; }
-.pricecta h2 em { font-style: normal; color: var(--accent); }
-/* .lede is 60ch left-aligned by default; centred it wants a shorter measure or
-   the last line strands one word under a full-width block. */
-.pricecta .lede { max-width: 52ch; }
-.pricecta .lede b { color: var(--text); }
-.pricecta .btn { margin-top: clamp(8px, 1.2vw, 14px); }
 
 @media (max-width: 780px) {
   .log__row { grid-template-columns: 46px minmax(0, 1fr); row-gap: 10px; }
@@ -739,36 +417,6 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
      what the variant is for. */
   .log:not(.log--narrow) .log__d { grid-column: 2 / -1; }
 }
-
-/* ---------- trust ----------
-   Two columns × two rows, matching .badges' own two-column grid above it in
-   the same band rather than introducing a third column count on the page. */
-.trust { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-@media (max-width: 680px) { .trust { grid-template-columns: 1fr; } }
-.tcard { background: var(--bg); padding: 26px 24px 28px; display: flex; flex-direction: column; gap: 11px; }
-/* Muted, not amber — six icons at full accent strength would spend the one
-   rationed colour on decoration instead of the thing it's supposed to mark. */
-.tcard__icon { width: 20px; height: 20px; color: var(--text-3); }
-.tcard__icon svg { width: 100%; height: 100%; display: block; }
-.tcard__k { font-family: var(--mono); font-size: .66rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
-.tcard__b { font-size: .92rem; color: var(--text-2); line-height: 1.58; }
-.tcard__b b { color: var(--text); font-weight: 500; }
-
-/* escalation reads through weight of tone, not through a second hue */
-.tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 26px; }
-@media (max-width: 760px) { .tiers { grid-template-columns: 1fr; } }
-.tier { border: 1px solid var(--line); border-top: 3px solid color-mix(in srgb, var(--charcoal) 24%, var(--paper)); background: var(--bg); padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 8px; }
-.tier--l2 { border-top-color: var(--amber); }
-.tier--l3 { border-top-color: var(--charcoal); }
-/* Limits and disclaimers rather than an escalating ladder. The l1/l2/l3 ramp
-   encodes "this one is worse than the last"; three parallel caveats have no such
-   order, so they all take the one advisory rule instead. */
-.tier--note { border-top-color: var(--amber); }
-.tier__icon { width: 18px; height: 18px; color: var(--text-3); margin-bottom: 2px; }
-.tier__icon svg { width: 100%; height: 100%; display: block; }
-.tier__l { font-family: var(--mono); font-size: .68rem; letter-spacing: .13em; text-transform: uppercase; color: var(--text-3); }
-.tier__h { font-size: .97rem; font-weight: 600; }
-.tier__d { font-size: .87rem; color: var(--text-2); line-height: 1.5; }
 
 /* ---------- invoice ----------
    Shared by the provider rate panel (/security-providers/[id]) and the earnings panel
@@ -903,35 +551,6 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 .check { display: grid; grid-template-columns: 16px 1fr; gap: 12px; align-items: start; font-size: .95rem; color: var(--text-2); line-height: 1.5; }
 .check svg { width: 15px; height: 15px; margin-top: 4px; color: var(--ok); }
 .check b { color: var(--text); font-weight: 500; }
-
-/* ---------- join teaser (home) ---------- */
-.join { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: clamp(32px,4.5vw,64px); align-items: center; }
-@media (max-width: 900px) { .join { grid-template-columns: 1fr; } }
-.perks { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
-@media (max-width: 560px) { .perks { grid-template-columns: 1fr; } }
-.perk { background: var(--bg); padding: 20px 18px 22px; display: flex; flex-direction: column; gap: 6px; }
-.perk__n { font-family: var(--mono); font-size: 1.24rem; font-weight: 500; color: var(--accent); font-variant-numeric: tabular-nums; }
-.perk__d { font-size: .87rem; color: var(--text-2); line-height: 1.5; }
-/* The perk grid was sized for the narrow column of the provider teaser. Given
-   the full measure it needs a third column, or .87rem text runs to ~85
-   characters a line — same breakpoints as .trust, which is the page's other
-   full-width card grid. */
-.perks--wide { grid-template-columns: repeat(3, 1fr); }
-@media (max-width: 940px) { .perks--wide { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 620px) { .perks--wide { grid-template-columns: 1fr; } }
-
-/* ---------- faq ---------- */
-.faq { border-top: 1px solid var(--line); }
-.qa { border-bottom: 1px solid var(--line); }
-.qa summary {
-  list-style: none; cursor: pointer; padding: 20px 0; display: flex; gap: 18px;
-  align-items: baseline; justify-content: space-between; font-size: 1.02rem; font-weight: 600;
-}
-.qa summary::-webkit-details-marker { display: none; }
-.qa summary:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
-.qa summary::after { content: "+"; font-family: var(--mono); color: var(--accent); font-size: 1.1rem; }
-.qa[open] summary::after { content: "\2212"; }
-.qa__a { padding: 0 0 22px; font-size: .94rem; color: var(--text-2); line-height: 1.65; max-width: 68ch; }
 
 /* ---------- faqs page ---------- */
 /* The rail beside the groups, not above them: seven titles stacked vertically
@@ -1127,74 +746,6 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 .scr__dot { width: 2.6cqw; height: 2.6cqw; border-radius: 50%; background: var(--verified); flex-shrink: 0; }
 .scr__payout { font-family: var(--mono); font-size: 4.2cqw; color: var(--amber); margin-top: 3cqw; }
 
-/* ---------- how it works: the booking, screen by screen ----------
-   Amber plates are the one place raw amber covers a large area. It earns it
-   because the screenshots are near-black: the phone becomes the darkest thing
-   on the band, so the eye lands on the product rather than on the panel.
-   Squared off, not rounded — every other card on this site is, and a run of
-   eight rounded tiles would read as borrowed from somewhere else. */
-.steps {
-  list-style: none; margin: 0; padding: 0;
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: clamp(20px, 2.4vw, 34px) clamp(18px, 2.2vw, 30px);
-}
-.step { display: flex; flex-direction: column; }
-
-.step__stage {
-  /* Sized so the widest shot (710 x 1400) lands just inside the plate's side
-     padding — the frames are as large as four columns allow. */
-  --shot-h: clamp(300px, 30vw, 424px);
-  --shot-pad: clamp(12px, 1.4vw, 16px);
-  background: var(--amber);
-  /* the dotted ground, in ink at low alpha — texture, not a second colour */
-  background-image: radial-gradient(rgba(18, 24, 27, .17) 1.1px, transparent 1.1px);
-  background-size: 12px 12px;
-  padding: var(--shot-pad);
-  display: flex; justify-content: center; align-items: center;
-  margin-bottom: clamp(18px, 2vw, 26px);
-}
-/* Driven by height, not width. The eight shots come off the device at slightly
-   different ratios (1.94–2.04), so matching their widths would leave the plates
-   ragged along the bottom of a row; matching heights keeps the row level and
-   costs a few pixels of width variation nobody can see. Every frame is shown
-   whole — no crop. */
-.step__shot {
-  display: block;
-  height: var(--shot-h); width: auto; max-width: 100%;
-  border-radius: 14px;
-  box-shadow: 0 26px 50px -22px rgba(0, 0, 0, .9);
-}
-
-.step__n {
-  font-family: var(--mono); font-size: .68rem; font-weight: 500;
-  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
-  margin-bottom: 10px;
-}
-.step__h { margin-bottom: 10px; }
-.step__b { font-size: .9rem; line-height: 1.58; color: var(--text-2); }
-
-/* Three across, against the booking strip's four. Both sections use the same
-   plate, so the differing column count is what keeps the second from reading
-   as a repeat of the first. The wider column also buys these three frames
-   noticeably more size than the eight above them get. */
-.steps--duty { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.steps--duty .step__stage { --shot-h: clamp(300px, 33vw, 470px); }
-
-@media (max-width: 1000px) {
-  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .step__stage { --shot-h: min(48vw, 560px); }
-}
-/* Three items go straight from three columns to one — two would leave an
-   orphan on the second row. */
-@media (max-width: 700px) {
-  .steps--duty { grid-template-columns: minmax(0, 1fr); gap: 44px; }
-  .steps--duty .step__stage { --shot-h: min(124vw, 560px); }
-}
-@media (max-width: 600px) {
-  .steps { grid-template-columns: minmax(0, 1fr); gap: 44px; }
-  .step__stage { --shot-h: min(124vw, 560px); }
-}
-
 /* ---------- onboarding chat ----------
    Drawn in this palette, not as a WhatsApp replica: a second brand's green
    would break the one-accent rule, and a convincing fake of someone else's
@@ -1299,25 +850,6 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
   font-family: var(--mono); font-size: 3.9cqw; letter-spacing: .01em;
 }
 .bub--doc svg { width: 3.8cqw; height: 4.4cqw; flex-shrink: 0; }
-
-/* ---------- footer ---------- */
-.foot { background: var(--ink); color: var(--steel); border-top: 1px solid var(--hair); padding-block: 56px 40px; }
-/* Brand block plus one track per COLUMNS entry — five since the apps got their
-   own heading. The brand column keeps its extra weight; the gap tightens to buy
-   the link columns back the width the fifth one costs them. */
-.foot__cols { display: grid; grid-template-columns: 1.3fr repeat(5, 1fr); gap: 26px; }
-@media (max-width: 900px) { .foot__cols { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 520px) { .foot__cols { grid-template-columns: 1fr; } }
-.foot h4 { font-family: var(--mono); font-size: .66rem; letter-spacing: .15em; text-transform: uppercase; color: var(--steel); margin: 0 0 14px; font-weight: 400; }
-.foot ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
-.foot a { font-size: .88rem; color: var(--steel); text-decoration: none; transition: color .15s ease; }
-.foot a:hover { color: var(--paper); }
-.foot__brand p { font-size: .87rem; line-height: 1.6; margin-top: 12px; max-width: 34ch; }
-.foot__legal {
-  margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--hair);
-  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
-  font-family: var(--mono); font-size: .72rem; color: var(--steel);
-}
 
 /* ============================================================
    /join — supply side.
@@ -1490,112 +1022,671 @@ abbr[title] { text-decoration: underline dotted; text-decoration-color: var(--te
 .reveal { transform: translateY(16px); transition: transform .8s var(--ease-out); }
 .reveal.in { transform: none; }
 
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .ticket .trow, .ticket__ft { opacity: 1 !important; transform: none !important; animation: none !important; }
-  .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+
+
+/* ============================================================
+   Chrome — nav, footer, sticky bar
+   ============================================================ */
+.nav {
+  position: sticky; top: 0; z-index: 60;
+  background: color-mix(in srgb, var(--ink) 80%, transparent);
+  backdrop-filter: saturate(1.5) blur(16px);
+  -webkit-backdrop-filter: saturate(1.5) blur(16px);
+  border-bottom: 1px solid var(--hair);
+  color: var(--text);
+}
+.nav__in { display: flex; align-items: center; gap: var(--s-6); height: var(--nav-h); }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); flex-shrink: 0; }
+/* logo-mark.svg wraps a 78×52 bitmap: 26px tall is its native 2× size. */
+.brand img { height: 26px; width: auto; }
+.brand__mark { width: 22px; height: 26px; flex-shrink: 0; }
+.brand__name {
+  font-family: var(--display); font-size: 1.3rem; font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase;
+  font-variation-settings: "opsz" 22;
+}
+.nav__links { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+.nav__links a {
+  font-size: var(--fs-sm); color: var(--text-2); text-decoration: none; white-space: nowrap;
+  padding: 8px 12px; border-radius: var(--r-sm);
+  transition: color var(--dur-1) ease, background-color var(--dur-1) ease;
+}
+.nav__links a:hover { color: var(--text); background: rgba(237, 239, 231, .05); }
+.nav__cta { display: flex; align-items: center; gap: 8px; }
+.nav__toggle {
+  display: none; flex-direction: column; justify-content: center; align-items: center;
+  gap: 4px; width: 40px; height: 40px; margin-left: auto;
+  background: transparent; border: 1px solid var(--line-strong); border-radius: var(--r-sm);
+  cursor: pointer; padding: 0;
+}
+.nav__toggle-bar { width: 16px; height: 1.5px; background: var(--text); transition: transform var(--dur-2) var(--ease-out), opacity var(--dur-1) ease; }
+.nav--open .nav__toggle-bar:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.nav--open .nav__toggle-bar:nth-child(2) { opacity: 0; }
+.nav--open .nav__toggle-bar:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+@media (max-width: 960px) {
+  .nav__links { display: none; }
+  .nav__in { gap: var(--s-3); }
+  .nav__toggle { display: flex; }
+  .nav--open .nav__links {
+    display: flex; flex-direction: column; align-items: stretch; gap: 2px;
+    position: absolute; top: var(--nav-h); left: 0; right: 0;
+    background: var(--ink); border-bottom: 1px solid var(--hair);
+    padding: 8px calc(var(--gut) - 12px) 16px; margin-left: 0;
+    box-shadow: var(--shadow-2);
+  }
+  .nav--open .nav__links a { padding: 12px; font-size: var(--fs-md); }
+}
+/* Below 760px both nav CTAs step down to the same quiet outline: the loud
+   amber belongs to the hero and to the sticky bar that replaces it. */
+@media (max-width: 760px) {
+  .nav__cta .btn--primary,
+  .nav__cta .btn--ghost {
+    background: transparent; border-color: var(--line-strong); color: var(--text); box-shadow: none;
+  }
+}
+.btn__label-short { display: none; }
+@media (max-width: 560px) {
+  .brand__name { display: none; }
+  .btn__label-full { display: none; }
+  .btn__label-short { display: inline; }
 }
 
-/* ---------- sticky book bar (home, mobile) ----------
-   Thumb reach: once the hero (and its own CTA) has scrolled out of view, this
-   takes over at the bottom of the screen rather than sending the visitor back
-   up to the nav. It only ever shows one action, and only on the widths where
-   the nav's own CTAs have already stepped down to quiet outlines — so there
-   is never a second filled button on screen at the same time as this one. */
+/* Mobile-only bottom bar: takes over the one primary action once the hero
+   has scrolled away. Never on screen at the same time as another fill. */
 .stickybar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 70;
   display: none;
-  background: color-mix(in srgb, var(--ink) 94%, transparent);
-  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--ink) 88%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-top: 1px solid var(--hair);
   padding: 12px var(--gut) calc(12px + env(safe-area-inset-bottom));
   transform: translateY(100%);
-  transition: transform .25s ease;
+  transition: transform var(--dur-3) var(--ease-out);
 }
 .stickybar.is-visible { transform: translateY(0); }
 .stickybar .btn { width: 100%; }
 @media (max-width: 760px) { .stickybar { display: block; } }
-@media (prefers-reduced-motion: reduce) { .stickybar { transition: none; } }
 
-/* ---------- booking flow: one-step-at-a-time carousel ----------
-   The 8-up static grid this replaced put every screenshot — including the two
-   disclaimer gates — in front of the visitor at once, which read as a wall to
-   skim rather than a sequence to follow. One step at a time, at every width:
-   swipe on touch, the arrow buttons or track's own arrow-key handling
-   otherwise. DutySteps keeps PhoneSteps' static grid — three plates never had
-   this problem. */
-.carousel__head {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 14px;
+.foot { background: var(--ink-0); color: var(--text-2); border-top: 1px solid var(--hair); padding-block: clamp(56px, 7vw, 88px) 40px; }
+.foot__cols { display: grid; grid-template-columns: 1.5fr repeat(5, minmax(0, 1fr)); gap: var(--s-6) var(--s-5); }
+@media (max-width: 1000px) { .foot__cols { grid-template-columns: repeat(3, minmax(0, 1fr)); } .foot__brand { grid-column: 1 / -1; } }
+@media (max-width: 560px) { .foot__cols { grid-template-columns: 1fr 1fr; } }
+.foot h4 {
+  font-family: var(--mono); font-size: var(--fs-2xs); font-weight: 500; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text-3); margin: 0 0 var(--s-4);
 }
-.carousel__pos {
-  font-family: var(--mono); font-size: .68rem; font-weight: 500;
-  letter-spacing: .16em; text-transform: uppercase; color: var(--accent);
+.foot ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.foot a { font-size: var(--fs-sm); color: var(--text-2); text-decoration: none; transition: color var(--dur-1) ease; }
+.foot a:hover { color: var(--text); }
+.foot__brand p { font-size: var(--fs-sm); line-height: 1.6; margin-top: var(--s-4); max-width: 34ch; }
+.foot__brand svg { width: 20px; height: 20px; }
+.foot__legal {
+  margin-top: clamp(40px, 5vw, 64px); padding-top: var(--s-5); border-top: 1px solid var(--hair);
+  display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: var(--fs-xs); color: var(--text-3);
 }
+
+/* ============================================================
+   Shared page primitives
+   ============================================================ */
+
+/* Section head: heading and lede, closer to their own content than to
+   the section above. No kicker — the heading carries its own weight. */
+.sechead { display: flex; flex-direction: column; gap: var(--s-5); max-width: 760px; margin-bottom: var(--head-y); }
+.sechead--sub { margin-top: clamp(80px, 10vw, 128px); gap: var(--s-4); }
+.h-d3 {
+  font-family: var(--display); font-weight: 300; text-transform: uppercase;
+  font-size: var(--fs-d3); line-height: 1.04; letter-spacing: .015em;
+  font-variation-settings: "opsz" 32;
+}
+[lang="hi"] .h-d3 { font-family: var(--deva); font-weight: 500; text-transform: none; letter-spacing: 0; }
+
+/* Aside + content. The aside can stick while a long list scrolls past. */
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 96px); align-items: start; }
+.split__aside { display: flex; flex-direction: column; gap: var(--s-5); align-items: flex-start; }
+.split__aside--sticky { position: sticky; top: calc(var(--nav-h) + 40px); }
+@media (max-width: 900px) {
+  .split { grid-template-columns: 1fr; }
+  .split__aside--sticky { position: static; }
+}
+
+.row-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); }
+
+/* A screenshot stage: deep ground, a faint dot grid and an amber wash from
+   above, so a near-black app screen reads as the brightest object on it. */
+.stage {
+  position: relative;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background-color: var(--ink-0);
+  background-image:
+    radial-gradient(70% 55% at 50% 0%, rgba(232, 163, 61, .13), transparent 70%),
+    radial-gradient(rgba(146, 160, 166, .13) 1px, transparent 1px);
+  background-size: 100% 100%, 18px 18px;
+  box-shadow: inset 0 1px 0 var(--edge);
+  overflow: hidden;
+}
+
+/* Listing heads on inner pages (/security-providers, /faqs, legal) */
+.hero { background: var(--ink); color: var(--text); position: relative; overflow: hidden; isolation: isolate; }
+.hero--list { padding-block: clamp(56px, 7vw, 96px) clamp(40px, 5vw, 64px); }
+.hero--list .wrap { position: relative; }
+.hero--list h1 { max-width: 24ch; }
+.hero__glow {
+  position: absolute; inset: -30% -10% auto -10%; height: 90%;
+  background: radial-gradient(50% 60% at 24% 32%, rgba(232, 163, 61, .09), transparent 68%);
+  pointer-events: none;
+}
+.hero__ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.hero__fine { font-family: var(--mono); font-size: var(--fs-xs); color: var(--text-3); letter-spacing: .01em; line-height: 1.7; }
+.hero__fine a { color: var(--accent); }
+[lang="hi"] .hero__fine { font-family: var(--deva); font-size: .82rem; }
+
+/* ============================================================
+   Homepage
+   ============================================================ */
+
+/* ---------- hero ---------- */
+.hero:not(.hero--list) { padding-block: clamp(48px, 6vw, 80px) 0; }
+.hero__bg {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(40% 50% at 78% 42%, rgba(232, 163, 61, .10), transparent 70%),
+    radial-gradient(50% 45% at 12% 0%, rgba(146, 160, 166, .07), transparent 70%);
+}
+.hero__in {
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: clamp(40px, 6vw, 96px); align-items: center;
+}
+.hero__copy { display: flex; flex-direction: column; gap: var(--s-6); }
+.hero h1 { max-width: 22ch; }
+.hero__sub { color: var(--text-2); font-size: var(--fs-lg); max-width: 50ch; line-height: 1.6; }
+.hero__sub b { color: var(--text); font-weight: 600; }
+.hero__verify {
+  align-self: flex-start;
+  font-size: var(--fs-sm); color: var(--text-2);
+  text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: .3em;
+  transition: color var(--dur-1) ease, text-decoration-color var(--dur-1) ease;
+}
+.hero__verify:hover { color: var(--text); text-decoration-color: currentColor; }
+[lang="hi"] .hero__verify { font-family: var(--deva); }
+@media (max-width: 980px) { .hero__in { grid-template-columns: 1fr; } .hero h1 { max-width: 20ch; } }
+
+/* city picker + primary action as one bar */
+.bookbar {
+  display: flex; align-items: stretch; gap: 6px;
+  padding: 6px; width: fit-content; max-width: 100%;
+  background: var(--ink-2);
+  border: 1px solid var(--line-strong);
+  border-radius: calc(var(--r-sm) + 6px);
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow-1);
+}
+.bookbar__city {
+  appearance: none; -webkit-appearance: none;
+  min-width: 190px; min-height: 48px;
+  padding: 0 40px 0 14px;
+  background-color: transparent;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-2) 50%),
+    linear-gradient(135deg, var(--text-2) 50%, transparent 50%);
+  background-position: calc(100% - 20px) 52%, calc(100% - 15px) 52%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  border: 0; border-radius: var(--r-sm);
+  color: var(--text); font-family: var(--body); font-size: var(--fs-md);
+  cursor: pointer;
+  transition: background-color var(--dur-1) ease;
+}
+.bookbar__city:hover { background-color: rgba(237, 239, 231, .05); }
+.bookbar__city:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.bookbar__city option { background: var(--ink-2); color: var(--paper); }
+@media (max-width: 560px) {
+  .bookbar { flex-direction: column; width: 100%; }
+  .bookbar__city { width: 100%; }
+  .bookbar__go { width: 100%; }
+}
+
+/* ---------- duty ticket ----------
+   The hero's evidence object: a booking's audit trail, already closed.
+   Every row is a state the platform can prove, so every dot is green. */
+.hero__proof { position: relative; }
+.ticket {
+  position: relative;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(180deg, var(--ink-2), color-mix(in srgb, var(--ink-2) 55%, var(--ink)));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow-2), 0 0 0 6px rgba(27, 36, 41, .35);
+}
+.ticket__hd {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 16px 22px; border-bottom: 1px solid var(--line);
+}
+.ticket__count { color: var(--verified); }
+.ticket__rows { list-style: none; margin: 0; padding: 10px 22px 16px; }
+.trow {
+  position: relative;
+  display: grid; grid-template-columns: 22px minmax(0, 1fr); align-items: center;
+  padding-block: 13px;
+  opacity: 0; transform: translateY(6px);
+}
+/* the timeline spine between two proven states */
+.trow:not(:last-child)::after {
+  content: ""; position: absolute; left: 4px; top: calc(50% + 9px); bottom: calc(-50% + 9px);
+  width: 1px; background: color-mix(in srgb, var(--verified) 45%, transparent);
+  transform-origin: top; transform: scaleY(0);
+}
+.trow__dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--verified);
+  box-shadow: 0 0 0 4px rgba(63, 166, 107, .14);
+}
+.trow__t { font-size: .9375rem; color: var(--text); line-height: 1.4; }
+.trow__t code { font-size: .88em; color: var(--amber); letter-spacing: .06em; }
+
+/* The page's one orchestrated moment: rows prove themselves in order. The
+   stagger reads each row's own index (--i), so adding a row re-times it. */
+.ticket.play .trow {
+  animation: logIn .6s var(--ease-out) forwards;
+  animation-delay: calc(.35s + var(--i, 0) * .2s);
+}
+.ticket.play .trow:not(:last-child)::after {
+  animation: spine .4s var(--ease-out) forwards;
+  animation-delay: calc(.55s + var(--i, 0) * .2s);
+}
+@keyframes logIn { to { opacity: 1; transform: none; } }
+@keyframes spine { to { transform: scaleY(1); } }
+
+/* the credentials true of every listing — the page's "logo bar" */
+.creds {
+  list-style: none; margin: clamp(40px, 4vw, 56px) 0 0; padding: var(--s-5) 0 var(--s-6);
+  border-top: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s-3) var(--s-6);
+}
+.cred { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-sm); color: var(--text-2); }
+.cred svg { color: var(--text-3); flex-shrink: 0; }
+@media (max-width: 760px) {
+  .creds { display: grid; grid-template-columns: 1fr; gap: 10px; }
+}
+
+/* ---------- services: four tiers ---------- */
+.tiers4 {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px; background: var(--line); border: 1px solid var(--line);
+  border-radius: var(--r-lg); overflow: hidden;
+}
+.tier4 {
+  background: var(--bg); padding: 28px 24px 24px;
+  display: flex; flex-direction: column; gap: var(--s-3);
+  grid-row: span 5;
+  transition: background-color var(--dur-2) ease;
+}
+@supports (grid-template-rows: subgrid) {
+  .tier4 { display: grid; grid-template-rows: subgrid; row-gap: var(--s-3); align-content: start; }
+}
+.tier4:hover { background: color-mix(in srgb, var(--bg) 92%, var(--paper)); }
+.tier4__top { display: flex; justify-content: space-between; align-items: center; }
+.tier4__meter { display: inline-flex; gap: 3px; }
+.tier4__meter i { width: 14px; height: 4px; border-radius: 2px; background: var(--line-strong); }
+.tier4__meter i.is-on { background: var(--text); }
+.tier4__body { font-size: var(--fs-sm); color: var(--text-2); line-height: 1.6; flex: 1; }
+.tier4__req {
+  display: flex; gap: 8px; align-items: flex-start;
+  margin-top: var(--s-3); padding-top: var(--s-4); border-top: 1px solid var(--line-soft);
+  font-family: var(--mono); font-size: var(--fs-xs); color: var(--text-3); line-height: 1.5;
+}
+.tier4__req svg { margin-top: 1px; flex-shrink: 0; }
+.tier4__link { display: inline; margin-top: var(--s-2); line-height: 1.6; }
+.tier4__link svg { display: inline-block; vertical-align: -2px; margin-left: 4px; }
+@media (max-width: 1000px) { .tiers4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px)  { .tiers4 { grid-template-columns: 1fr; } }
+
+/* ---------- booking flow: step picker (desktop) ---------- */
+.booking__narrow { display: none; }
+@media (max-width: 900px) {
+  .booking__wide { display: none; }
+  .booking__narrow { display: block; }
+}
+.picker { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+.picker__list { display: flex; flex-direction: column; gap: 2px; }
+.picker__tab {
+  display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: var(--s-2);
+  width: 100%; text-align: left;
+  padding: 14px 16px; border-radius: var(--r-md);
+  border: 1px solid transparent; background: transparent;
+  color: var(--text-2); font: inherit; cursor: pointer;
+  transition: background-color var(--dur-2) ease, border-color var(--dur-2) ease, color var(--dur-1) ease;
+}
+.picker__tab:hover { background: rgba(237, 239, 231, .03); color: var(--text); }
+.picker__tab.is-on {
+  background: var(--ink-2); border-color: var(--line); color: var(--text);
+  box-shadow: inset 0 1px 0 var(--edge);
+}
+.picker__tab:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.picker__n {
+  font-family: var(--mono); font-size: var(--fs-xs); font-weight: 500; color: var(--text-3);
+  padding-top: 3px; font-variant-numeric: tabular-nums;
+}
+.picker__tab.is-on .picker__n { color: var(--accent); }
+.picker__txt { display: flex; flex-direction: column; }
+.picker__h { font-size: var(--fs-md); font-weight: 600; line-height: 1.4; }
+.picker__b {
+  display: grid; grid-template-rows: 0fr;
+  font-size: var(--fs-sm); color: var(--text-2); line-height: 1.6;
+  opacity: 0;
+  transition: grid-template-rows var(--dur-3) var(--ease-out), opacity var(--dur-2) ease;
+}
+.picker__b > span { min-height: 0; overflow: hidden; }
+.picker__b > span::before { content: ""; display: block; height: 6px; }
+.picker__tab.is-on .picker__b { grid-template-rows: 1fr; opacity: 1; }
+.picker__stage {
+  position: sticky; top: calc(var(--nav-h) + 24px);
+  display: flex; flex-direction: column; align-items: center;
+  padding: clamp(28px, 4vw, 48px) 24px 20px;
+}
+/* a device bezel around the screenshot */
+.picker__frame {
+  position: relative;
+  height: clamp(460px, 42vw, 600px); aspect-ratio: 700 / 1386;
+}
+.picker__shot {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  /* the shots carry their own device outline; the radius trims the square
+     backdrop around it */
+  object-fit: cover; object-position: top; border-radius: 30px;
+  box-shadow: 0 36px 72px -30px rgba(0, 0, 0, .95);
+  opacity: 0; transform: scale(.985);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
+}
+.picker__shot.is-on { opacity: 1; transform: none; }
+.picker__pos { margin-top: var(--s-4); }
+
+/* ---------- screenshot steps (duty log grid, mobile booking carousel) ---------- */
+.steps {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(28px, 3vw, 40px) clamp(20px, 2.4vw, 32px);
+}
+.step { display: flex; flex-direction: column; }
+.step__stage {
+  --shot-h: clamp(300px, 28vw, 400px);
+  position: relative;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background-color: var(--ink-0);
+  background-image:
+    radial-gradient(70% 55% at 50% 0%, rgba(232, 163, 61, .13), transparent 70%),
+    radial-gradient(rgba(146, 160, 166, .13) 1px, transparent 1px);
+  background-size: 100% 100%, 18px 18px;
+  box-shadow: inset 0 1px 0 var(--edge);
+  padding: clamp(20px, 2.4vw, 32px);
+  display: flex; justify-content: center; align-items: center;
+  margin-bottom: var(--s-5);
+}
+.step__shot {
+  display: block; height: var(--shot-h); width: auto; max-width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 28px 56px -24px rgba(0, 0, 0, .95);
+}
+/* the screen's state, pinned to the stage as a status pill */
+.step__n {
+  position: absolute; top: 14px; left: 14px;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 10px 5px 9px; border-radius: 999px;
+  background: color-mix(in srgb, var(--ink) 80%, transparent);
+  border: 1px solid var(--line-strong);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  font-family: var(--mono); font-size: var(--fs-2xs); font-weight: 500;
+  letter-spacing: .06em; text-transform: uppercase; color: var(--text);
+}
+.step__n::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--amber); }
+.step__h { margin-bottom: var(--s-2); }
+.step__b { font-size: var(--fs-sm); line-height: 1.6; color: var(--text-2); }
+.steps--duty { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.steps--duty .step__stage { --shot-h: clamp(320px, 30vw, 440px); }
+@media (max-width: 1000px) {
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step__stage { --shot-h: min(48vw, 520px); }
+}
+@media (max-width: 760px) {
+  .steps--duty { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+  .steps--duty .step__stage { --shot-h: min(118vw, 520px); }
+}
+@media (max-width: 600px) {
+  .steps { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+  .step__stage { --shot-h: min(118vw, 520px); }
+}
+
+/* mobile booking carousel */
+.carousel__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s-4); }
+.carousel__pos { font-family: var(--mono); font-size: var(--fs-2xs); font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
 .carousel__arrows { display: flex; gap: 8px; }
 .carousel__arrow {
-  font-family: var(--mono); font-size: .82rem;
-  width: 34px; height: 34px;
-  border: 1px solid var(--line); background: transparent; color: var(--text);
-  cursor: pointer;
-  transition: border-color .15s ease, color .15s ease;
+  font-family: var(--mono); font-size: .875rem;
+  width: 40px; height: 40px; border-radius: var(--r-sm);
+  border: 1px solid var(--line-strong); background: rgba(237, 239, 231, .03); color: var(--text);
+  cursor: pointer; transition: border-color var(--dur-1) ease, background-color var(--dur-1) ease;
 }
-.carousel__arrow:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-.carousel__arrow:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.carousel__arrow:disabled { opacity: .32; cursor: default; }
+.carousel__arrow:hover:not(:disabled) { border-color: var(--text-2); background: rgba(237, 239, 231, .07); }
+.carousel__arrow:disabled { opacity: .35; cursor: default; }
+.carousel__arrow { display: grid; place-items: center; }
+.carousel__glyph--back { transform: rotate(180deg); }
 .carousel__track {
-  display: flex; gap: 16px;
+  display: flex; gap: var(--s-4);
   overflow-x: auto; scroll-snap-type: x mandatory;
-  margin-inline: calc(var(--gut) * -1);
-  padding-inline: var(--gut);
-  padding-bottom: 6px;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  margin-inline: calc(var(--gut) * -1); padding-inline: var(--gut); padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch; scrollbar-width: none;
 }
 .carousel__track::-webkit-scrollbar { display: none; }
 .carousel__track:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
-.carousel__item { flex: 0 0 84%; scroll-snap-align: center; display: flex; flex-direction: column; }
-/* Above phone-width, 84% of the full 1180px band left two slides fully
-   readable side by side — the exact "everything visible at once" problem
-   this carousel exists to fix. Capping the whole component to a narrower
-   column (matching how .lede caps prose to a measure instead of the full
-   band) keeps the same small, deliberate peek ratio the mobile strip has. */
-@media (min-width: 601px) {
-  .carousel { max-width: 640px; }
-  .carousel__item { flex-basis: 88%; }
-  /* The bleed-to-screen-edge trick above is for mobile, where .carousel spans
-     the full band and touch-dragging should reach past the wrap's own
-     gutter. Once .carousel is already a narrow, capped column, that same
-     trick widens the track's scrollable viewport by 2×--gut beyond the cap
-     — up to 96px at wide viewports, which is enough for the next slide's
-     caption to read clearly instead of just peeking. Neutralised here, plus
-     a soft fade so the peeking plate's own edge isn't a hard crop. */
-  .carousel__track {
-    margin-inline: 0; padding-inline: 0;
-    mask-image: linear-gradient(to right, transparent, black 28px, black calc(100% - 28px), transparent);
-  }
-  /* The peek is only ~22px wide at this width — plenty to show a plate is
-     there, not enough to fade a caption's first word into illegibility
-     rather than invisibility. Only the active step's text renders; the
-     image alone carries "there's more" for its neighbours. */
-  .carousel__item:not(.is-active) .step__n,
-  .carousel__item:not(.is-active) .step__h,
-  .carousel__item:not(.is-active) .step__b {
-    opacity: 0;
-  }
-}
-.carousel__dots { display: flex; gap: 6px; justify-content: center; margin-top: 18px; }
+.carousel__item { flex: 0 0 86%; scroll-snap-align: center; display: flex; flex-direction: column; }
+.carousel__item:not(.is-active) .step__stage { opacity: .55; transition: opacity var(--dur-2) ease; }
+.carousel__dots { display: flex; gap: 16px; justify-content: center; margin-top: var(--s-5); }
 .carousel__dot {
-  width: 5px; height: 5px; border-radius: 5px; padding: 0; border: none;
-  background: var(--line); cursor: pointer;
-  transform: scaleX(1); transform-origin: center;
-  transition: transform .3s ease, background-color .3s ease;
+  width: 6px; height: 6px; border-radius: 6px; padding: 0; border: none;
+  background: var(--line-strong); cursor: pointer;
+  transition: transform var(--dur-2) var(--ease-out), background-color var(--dur-2) ease;
 }
-.carousel__dot:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
-.carousel__dot.is-on { transform: scaleX(3.6); background: var(--accent); }
+.carousel__dot.is-on { transform: scaleX(3.4); background: var(--accent); }
+
+/* ---------- badges ---------- */
+.badges {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--line); border: 1px solid var(--line);
+  border-radius: var(--r-lg); overflow: hidden;
+}
+@media (max-width: 640px) { .badges { grid-template-columns: 1fr; } }
+.bcard { background: var(--bg); padding: 24px 24px 20px; display: flex; flex-direction: column; gap: var(--s-2); }
+.bcard__icon { width: 22px; height: 22px; color: var(--ok); margin-bottom: var(--s-1); }
+.bcard__icon svg { width: 100%; height: 100%; display: block; }
+.bcard--absent .bcard__icon { color: var(--text-3); }
+.bcard__k { font-size: var(--fs-md); color: var(--text); }
+.bcard__b { font-size: var(--fs-sm); color: var(--text-2); line-height: 1.6; }
+.bcard__m {
+  margin-top: auto; padding-top: var(--s-4);
+  font-family: var(--mono); font-size: var(--fs-2xs); letter-spacing: .04em;
+  text-transform: uppercase; color: var(--text-3);
+}
+.bcard__m b { color: var(--text-2); font-weight: 500; }
+
+/* ---------- rules enforced on every booking ---------- */
+.rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+@media (max-width: 760px) { .rules { grid-template-columns: 1fr; } }
+.rule {
+  display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--s-4);
+  padding: 24px; border-radius: var(--r-lg);
+  background: var(--ink-2); border: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 var(--edge);
+}
+.rule__icon {
+  width: 40px; height: 40px; border-radius: var(--r-md);
+  display: grid; place-items: center;
+  background: var(--ink); border: 1px solid var(--line); color: var(--text-2);
+}
+.rule__icon svg { width: 20px; height: 20px; }
+.rule__txt { display: flex; flex-direction: column; gap: var(--s-2); }
+.rule__txt h4 { font-size: var(--fs-lg); }
+.rule__b { font-size: var(--fs-sm); color: var(--text-2); line-height: 1.6; }
+.rule__b b { color: var(--text); font-weight: 600; }
+.rule__k { margin-top: var(--s-2); }
+
+/* ---------- limits: the paper band ---------- */
+.notice {
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  background: var(--bg-2); box-shadow: var(--shadow-1); overflow: hidden;
+}
+.notice__hd {
+  display: flex; align-items: center; gap: 8px;
+  padding: 14px 24px; border-bottom: 1px solid var(--line);
+  font-family: var(--mono); font-size: var(--fs-2xs); font-weight: 500; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--accent);
+}
+.notice__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.limit { padding: 28px 24px 32px; display: flex; flex-direction: column; gap: var(--s-3); }
+.limit + .limit { border-left: 1px solid var(--line); }
+.limit__icon { width: 24px; height: 24px; color: var(--text); margin-bottom: var(--s-2); }
+.limit__icon svg { width: 100%; height: 100%; display: block; }
+.limit h3 { font-size: var(--fs-lg); }
+.limit p { font-size: .9375rem; color: var(--text-2); line-height: 1.6; }
+.limit__k { margin-top: auto; padding-top: var(--s-4); border-top: 1px solid var(--line-soft); }
+@media (max-width: 860px) {
+  .notice__cols { grid-template-columns: 1fr; }
+  .limit + .limit { border-left: 0; border-top: 1px solid var(--line); }
+}
+
+/* ---------- accountability ledger ---------- */
+.ledger {
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  background: var(--ink-2); box-shadow: inset 0 1px 0 var(--edge); overflow: hidden;
+}
+.ledger__hd { padding: 14px 24px; border-bottom: 1px solid var(--line); }
+.ledger__rows { margin: 0; }
+.ledger__row {
+  display: grid; grid-template-columns: minmax(140px, 200px) minmax(0, 1fr); gap: var(--s-6);
+  padding: 20px 24px; border-bottom: 1px solid var(--line-soft);
+}
+.ledger__row:last-child { border-bottom: 0; }
+.ledger__row dt { font-family: var(--mono); font-size: var(--fs-sm); font-weight: 500; color: var(--text); }
+.ledger__row dd { margin: 0; font-size: .9375rem; color: var(--text-2); line-height: 1.6; max-width: 70ch; }
+@media (max-width: 640px) { .ledger__row { grid-template-columns: 1fr; gap: 6px; } }
+
+/* ---------- price moment ---------- */
+.pricecta { position: relative; overflow: hidden; isolation: isolate; }
+.pricecta__glow {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(46% 70% at 50% 100%, rgba(232, 163, 61, .16), transparent 72%);
+}
+.pricecta__in { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--s-5); }
+.pricecta__in h2 { max-width: 20ch; }
+.pricecta__in .lede { max-width: 50ch; }
+.pricecta__in .btn { margin-top: var(--s-3); }
+
+/* ---------- browse directory ---------- */
+.directory { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(48px, 7vw, 112px); }
+@media (max-width: 900px) { .directory { grid-template-columns: 1fr; } }
+.directory__col { display: flex; flex-direction: column; gap: var(--s-4); }
+.directory__lede { font-size: var(--fs-md); color: var(--text-2); max-width: 52ch; }
+.dir-list { list-style: none; margin: var(--s-4) 0 0; padding: 0; border-top: 1px solid var(--line); }
+.dir-item { display: flex; flex-direction: column; gap: 4px; padding: 18px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+.dir-item__t { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; color: var(--text); transition: color var(--dur-1) ease; }
+.dir-item__t svg { color: var(--text-3); transition: transform var(--dur-2) var(--ease-out), color var(--dur-1) ease; }
+.dir-item__b { font-size: var(--fs-sm); color: var(--text-2); line-height: 1.55; }
+.dir-item:hover .dir-item__t { color: var(--accent); }
+.dir-item:hover .dir-item__t svg { color: var(--accent); transform: translateX(3px); }
+.city-links { list-style: none; margin: var(--s-4) 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-2); }
+@media (max-width: 480px) { .city-links { grid-template-columns: 1fr; } }
+.city-links li { display: flex; }
+.city-link {
+  flex: 1;
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 14px 16px; border-radius: var(--r-sm);
+  border: 1px solid var(--line); background: rgba(237, 239, 231, .02);
+  font-size: var(--fs-sm); color: var(--text); text-decoration: none;
+  transition: border-color var(--dur-1) ease, background-color var(--dur-1) ease;
+}
+.city-link svg { color: var(--text-3); flex-shrink: 0; transition: transform var(--dur-2) var(--ease-out), color var(--dur-1) ease; }
+.city-link:hover { border-color: var(--line-strong); background: rgba(237, 239, 231, .05); }
+.city-link:hover svg { color: var(--accent); transform: translateX(3px); }
+
+/* ---------- faq (home and /faqs) ---------- */
+.faq { border-top: 1px solid var(--line); }
+.qa { border-bottom: 1px solid var(--line); }
+.qa summary {
+  list-style: none; cursor: pointer; padding: 20px 0;
+  display: flex; gap: var(--s-5); align-items: center; justify-content: space-between;
+  font-size: var(--fs-md); font-weight: 600; color: var(--text);
+  transition: color var(--dur-1) ease;
+}
+.qa summary:hover { color: var(--accent); }
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary:focus-visible { outline: 2px solid var(--amber); outline-offset: 4px; }
+/* a drawn plus that turns into a minus */
+.qa summary::after {
+  content: ""; flex-shrink: 0; width: 12px; height: 12px;
+  background:
+    linear-gradient(currentColor, currentColor) center / 12px 1.5px no-repeat,
+    linear-gradient(currentColor, currentColor) center / 1.5px 12px no-repeat;
+  color: var(--text-3);
+  transition: transform var(--dur-2) var(--ease-out);
+}
+.qa[open] summary::after {
+  background: linear-gradient(currentColor, currentColor) center / 12px 1.5px no-repeat;
+  transform: rotate(180deg);
+}
+.qa__a { padding: 0 0 22px; font-size: .9375rem; color: var(--text-2); line-height: 1.65; max-width: 64ch; }
+
+/* ---------- provider aside ---------- */
+.aside-panel {
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  background: var(--ink-2); box-shadow: inset 0 1px 0 var(--edge); overflow: hidden;
+}
+.aside-panel__meta {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 24px;
+  padding: 14px 28px; border-bottom: 1px solid var(--line);
+}
+.aside-panel__body {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(32px, 5vw, 72px); align-items: center;
+  padding: clamp(28px, 4vw, 48px) clamp(28px, 4vw, 56px);
+}
+.aside-panel .phones--reel { --phone-w: clamp(176px, 15vw, 204px); }
+@media (max-width: 860px) { .aside-panel__body { grid-template-columns: 1fr; } }
+
+/* ---------- closing cta ---------- */
+.closer {
+  position: relative; overflow: hidden; isolation: isolate;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+  gap: clamp(36px, 5vw, 72px); align-items: center;
+  padding: clamp(32px, 5vw, 72px);
+  border-radius: calc(var(--r-lg) + 8px);
+  border: 1px solid var(--line-strong);
+  background: var(--ink);
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow-2);
+}
+.closer__glow {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(50% 70% at 85% 60%, rgba(232, 163, 61, .14), transparent 72%),
+    radial-gradient(rgba(146, 160, 166, .1) 1px, transparent 1px);
+  background-size: 100% 100%, 18px 18px;
+  mask-image: linear-gradient(90deg, transparent 20%, #000 80%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 20%, #000 80%);
+}
+.closer__copy { display: flex; flex-direction: column; gap: var(--s-5); }
+.closer__copy h2 { max-width: 16ch; }
+.closer__fine { font-size: var(--fs-sm); color: var(--text-3); line-height: 1.7; }
+.closer__fine a { color: var(--text-2); text-decoration: underline; text-decoration-color: var(--line-strong); }
+.closer__fine a:hover { color: var(--text); text-decoration-color: currentColor; }
+@media (max-width: 940px) { .closer { grid-template-columns: 1fr; } }
+
+/* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ticket .trow { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .ticket .trow::after { transform: none !important; animation: none !important; }
+  .reveal { transform: none !important; transition: none; }
+  .stickybar, .picker__shot, .picker__b, .carousel__dot, .nav__toggle-bar { transition: none; }
   .carousel__track { scroll-behavior: auto; }
-  .carousel__dot { transition: none; }
 }
 
 /* ---------- legal pages (privacy / terms / refunds / grievance) ----------

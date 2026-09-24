@@ -31,9 +31,9 @@ export default function PhoneSteps({ steps, variant = '' }) {
               loading="lazy"
               decoding="async"
             />
+            <span className="step__n">{s.kicker}</span>
           </div>
 
-          <p className="step__n">{s.kicker}</p>
           <h3 className="step__h">{s.h}</h3>
           <p className="step__b">{s.b}</p>
         </li>

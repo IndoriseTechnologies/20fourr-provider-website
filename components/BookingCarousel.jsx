@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { ArrowRight } from '@/components/Icons';
 
 /**
  * The booking flow's one-step-at-a-time strip, at every width — swipeable on
@@ -55,7 +56,7 @@ export default function BookingCarousel({ steps }) {
             disabled={active === 0}
             aria-label="Previous step"
           >
-            &larr;
+            <ArrowRight className="carousel__glyph carousel__glyph--back" />
           </button>
           <button
             type="button"
@@ -64,7 +65,7 @@ export default function BookingCarousel({ steps }) {
             disabled={active === steps.length - 1}
             aria-label="Next step"
           >
-            &rarr;
+            <ArrowRight className="carousel__glyph" />
           </button>
         </div>
       </div>
@@ -86,8 +87,8 @@ export default function BookingCarousel({ steps }) {
                 loading="lazy"
                 decoding="async"
               />
+              <span className="step__n">{s.kicker}</span>
             </div>
-            <p className="step__n">{s.kicker}</p>
             <h3 className="step__h">{s.h}</h3>
             <p className="step__b">{s.b}</p>
           </div>
